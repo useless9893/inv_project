@@ -3,7 +3,7 @@ from Auth_user.models import *
 
 class Employee(models.Model):
     employee_id=models.AutoField(primary_key=True)
-    user_id=models.OneToOneField(CoreUser)
+    user_id=models.OneToOneField(CoreUser,on_delete=models.CASCADE)
     age=models.IntegerField()
     salary=models.DecimalField()
     id_proof=models.CharField(max_length=50)
