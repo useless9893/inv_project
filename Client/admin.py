@@ -1,13 +1,9 @@
 from django.contrib import admin
+from .models import *
 
 # Register your models here.
 
-from .models import Technology_option
-from .models import Technology
-from .models import Payment_method
-from .models import Tax
-
-
+ 
 
 @admin.register(Technology_option)
 class Technology_optionAdmin(admin.ModelAdmin):
