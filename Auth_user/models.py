@@ -46,3 +46,34 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
         class Meta:
             db_table = 'core_user'
 
+
+
+class State(models.Model):
+    state_id = models.AutoField(primary_key=True)
+    state_name=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.state_name
+    
+    class Meta:
+        db_table = 'state'
+    
+class City(models.Model):
+    city_id=models.AutoField(primary_key=True)
+    city_name=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.city_name
+    
+    class Meta:
+        db_table = 'city'
+    
+class Country(models.Model):
+    country_id=models.AutoField(primary_key=True)
+    country_name=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.country_name
+    
+    class Meta:
+        db_table = 'country'        
