@@ -10,6 +10,7 @@ from rest_framework import viewsets
 class Technology_optionViewSet(viewsets.ModelViewSet):
     queryset = Technology_option.objects.all()
     serializer_class = Technology_optionSarializer
+    
 
 
 
