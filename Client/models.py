@@ -1,7 +1,6 @@
 from django.db import models
 from Auth_user.models import * 
 
-<<<<<<< HEAD
 
 class Client(models.Model):
     client_id = models.AutoField(primary_key=True)
@@ -14,8 +13,6 @@ class Client(models.Model):
     
     class Meta:
         db_table = 'client'
-=======
-# Create your models here.
 
 class Technology_option(models.Model):
     option_id = models.AutoField(primary_key=True)
@@ -69,5 +66,3 @@ class Tax(models.Model):
     
     class Meta:
         db_table = 'Tax'
-
->>>>>>> 329584f722d0a25835cfedc8b3c95588de6bd423
