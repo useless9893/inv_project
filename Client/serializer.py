@@ -1,8 +1,18 @@
 from rest_framework import routers, serializers,viewsets
 from.models import*
+from Auth_user.serializer import *
 
 
-class Technology_optionSarializer(serializers.ModelSerializer):
+
+
+class ClientSerializer(serializers.ModelSerializer):
+    user_id =CoreUserSerializer()
+    class Meta:
+        model = Client
+        fields = '__all__'
+        
+        
+class Technology_optionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Technology_option
