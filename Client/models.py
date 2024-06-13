@@ -8,6 +8,8 @@ class Client(models.Model):
     user_id = models.ForeignKey(CoreUser,on_delete=models.CASCADE,related_name='user_client')
     company_address = models.CharField(max_length=555)
     
+    DisplayField = ['client_id','client_name','user_id','company_address']
+    
     def __str__(self):
         return self.client_name    
     
@@ -24,7 +26,7 @@ class Technology_option(models.Model):
         return self.option
     
     class Meta:
-        db_table = 'Technology_option'
+        db_table = 'technology_option'
 
 
 class Technology(models.Model):
@@ -38,7 +40,7 @@ class Technology(models.Model):
         return self.name
     
     class Meta:
-        db_table = 'Technology'
+        db_table = 'technology'
     
 
 class Payment_method(models.Model):
@@ -51,7 +53,7 @@ class Payment_method(models.Model):
         return self.payment_type
     
     class Meta:
-        db_table = 'Payment_method'
+        db_table = 'payment_method'
 
 
 class Tax(models.Model):
@@ -65,4 +67,4 @@ class Tax(models.Model):
         return self.tax_name
     
     class Meta:
-        db_table = 'Tax'
+        db_table = 'tax'

@@ -43,8 +43,12 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
         USERNAME_FIELD = 'user_name'
         REQUIRED_FIELDS = ['first_name','last_name']
         objects = UserManager() 
+        
         class Meta:
             db_table = 'core_user'
+            
+        def __str__(self):
+            return f'{self.first_name} {self.last_name}'    
 
 
 
