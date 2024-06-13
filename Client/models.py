@@ -1,6 +1,20 @@
 from django.db import models
+from Auth_user.models import * 
 
-# Create your models here.
+
+class Client(models.Model):
+    client_id = models.AutoField(primary_key=True)
+    client_name = models.CharField(max_length=255)
+    user_id = models.ForeignKey(CoreUser,on_delete=models.CASCADE,related_name='user_client')
+    company_address = models.CharField(max_length=555)
+    
+    DisplayField = ['client_id','client_name','user_id','company_address']
+    
+    def __str__(self):
+        return self.client_name    
+    
+    class Meta:
+        db_table = 'client'
 
 class Technology_option(models.Model):
     option_id = models.AutoField(primary_key=True)
@@ -54,4 +68,6 @@ class Tax(models.Model):
     
     class Meta:
         db_table = 'tax'
+
+
 

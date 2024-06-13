@@ -43,6 +43,51 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
         USERNAME_FIELD = 'user_name'
         REQUIRED_FIELDS = ['first_name','last_name']
         objects = UserManager() 
+        
         class Meta:
             db_table = 'core_user'
+            
+        def __str__(self):
+            return f'{self.first_name} {self.last_name}'    
 
+
+
+class Role(models.Model):
+    role_id=models.AutoField(primary_key=True)
+    role_type=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.role_type
+    
+    class Meta:
+        db_table = 'role'
+
+class State(models.Model):
+    state_id = models.AutoField(primary_key=True)
+    state_name=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.state_name
+    
+    class Meta:
+        db_table = 'state'
+    
+class City(models.Model):
+    city_id=models.AutoField(primary_key=True)
+    city_name=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.city_name
+    
+    class Meta:
+        db_table = 'city'
+    
+class Country(models.Model):
+    country_id=models.AutoField(primary_key=True)
+    country_name=models.CharField(max_length=255)
+    
+    def __str__(self):
+        return self.country_name
+    
+    class Meta:
+        db_table = 'country'        
