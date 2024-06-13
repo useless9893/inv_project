@@ -12,7 +12,7 @@ class Technology_option(models.Model):
         return self.option
     
     class Meta:
-        db_table = 'Technology_option'
+        db_table = 'technology_option'
 
 
 class Technology(models.Model):
@@ -26,7 +26,7 @@ class Technology(models.Model):
         return self.name
     
     class Meta:
-        db_table = 'Technology'
+        db_table = 'technology'
     
 
 class Payment_method(models.Model):
@@ -39,7 +39,7 @@ class Payment_method(models.Model):
         return self.payment_type
     
     class Meta:
-        db_table = 'Payment_method'
+        db_table = 'payment_method'
 
 
 class Tax(models.Model):
@@ -53,5 +53,5 @@ class Tax(models.Model):
         return self.tax_name
     
     class Meta:
-        db_table = 'Tax'
+        db_table = 'tax'
 

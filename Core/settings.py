@@ -38,6 +38,7 @@ MEDIA_URL = '/media/'
 
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -196,4 +197,67 @@ SIMPLE_JWT = {
     "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
+}
+
+
+
+
+
+JAZZMIN_SETTINGS = {
+    # title of the window (Will default to current_admin_site.site_title if absent or None)
+    "site_title": "Invoice Management System",
+
+    # Title on the brand (19 chars max) (defaults to current_admin_site.site_header if absent or None)
+    "site_brand": "Invoice Management System",
+
+    # Welcome text on the login screen
+    "welcome_sign": "Welcome to the invoice management system",
+
+    # Copyright on the footer
+    "copyright": "Invoice management system Ltd",
+
+    # # List of model admins to search from the search bar, search bar omitted if excluded
+    # # If you want to use a single search field you dont need to use a list, you can use a simple string 
+    # "search_model": ["auth.User", "auth.Group"],
+
+       # Links to put along the top menu
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+        {"model":"auth.Group"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "myapp"},
+    ],
+
+    # User Menu #
+    # Additional links to include in the user menu on the top right ("app" url type is not allowed)
+    "usermenu_links": [
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True, "icon":"fas fa-phone-alt"},
+        {"model": "auth.user"},
+    ],
+
+    # Whether to display the side menu
+    "show_sidebar": True,
+
+    # Whether to aut expand the menu
+    "navigation_expanded":True,
+
+    # Hide these apps when generating side menu e.g (auth)
+    "hide_apps": [],
+
+    # Hide these models when generating side menu (e.g auth.user)
+    "hide_models": [],
+
+   # Whether to show the UI customizer on the sidebar
+    "show_ui_builder": True,
+    
+
 }
