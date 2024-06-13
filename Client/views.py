@@ -24,14 +24,24 @@ class ClientAPI(APIView):
             
             return Response({"Message":"Client created successfully"}
                             )
-        return Response({"Message":client_serializer.errors})    
-        
-
-
-class ClientViewset(viewsets.ModelViewSet):
-    queryset = Client.objects.all()
-    serializer_class = Client2Serializer
-
+        return Response({"Message":client_serializer.errors})  
+    
+    def patch(self,request):
+        validated_data=request.data 
+        client_update = request.GET.get('client_update')
+        client_obj = Client.objects.get(client_id=client_update)
+        client_serializer = ClientSerializer(client_obj,data=validated_data,partial=True)
+        if client_serializer.is_valid():
+            client_serializer.save()
+            return Response({'Message':'Data updated successfully'}
+                            )
+        return Response(client_serializer.errors)  
+    def delete(self,request):
+        delete_client = request.GET.get('delete_client')
+        client_obj = Client.objects.get(client_id=delete_client)
+        client_obj.delete()
+        return Response({'Message':"Client deleted successfully"})
+            
 
 
 class Technology_optionViewSet(viewsets.ModelViewSet):
