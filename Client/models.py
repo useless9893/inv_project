@@ -68,3 +68,6 @@ class Tax(models.Model):
     
     class Meta:
         db_table = 'tax'
+
+
+
