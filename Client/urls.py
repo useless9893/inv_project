@@ -8,6 +8,7 @@ router.register('Technology_option', Technology_optionViewSet,basename='Technolo
 router.register('Technology', TechnologyViewSet,basename='Technology')
 router.register('Payment_method', Payment_methodViewSet,basename='Payment_method')
 router.register('Tax', TaxViewSet,basename='Tax')
+router.register('Client', ClientViewset,basename='Client')
 
 
 urlpatterns = [
