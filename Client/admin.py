@@ -30,6 +30,8 @@ class TaxAdmin(admin.ModelAdmin):
 
 
 
+
+
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     list_display = Team.DisplayField
