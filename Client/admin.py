@@ -45,3 +45,4 @@ class TeamAdmin(admin.ModelAdmin):
 class ProjectAdmin(admin.ModelAdmin):
     list_display = Project.DisplayField
 
+
