@@ -63,3 +63,6 @@ class Payment_methodViewSet(viewsets.ModelViewSet):
 class TaxViewSet(viewsets.ModelViewSet):
     queryset = Tax.objects.all()
     serializer_class = TaxSerializer
+
+
+    
