@@ -17,4 +17,5 @@ urlpatterns = [
     path('invoice/',InvoiceAPI.as_view()),
     path('team/',TeamAPIView.as_view()),
     path('project/',ProjectAPIView.as_view()),
+    path('invoice_item/',InvoiceitemAPI.as_view())
 ] 
