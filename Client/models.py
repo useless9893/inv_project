@@ -115,7 +115,7 @@ class Project(models.Model):
     tech_id = models.ManyToManyField(Technology)
 
     
-    DisplayField = ['project_id','project_name','duration','client_id','team_id','tech_id']
+    DisplayField = ['project_id','project_name','duration','client_id','team_id']
 
     def __str__(self):
         return self.project_name
