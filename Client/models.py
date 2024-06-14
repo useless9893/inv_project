@@ -131,3 +131,5 @@ class Payment(models.Model):
     method_id = models.ForeignKey(Payment_method,on_delete=models.CASCADE,null=True)
     amount = models.DecimalField(max_digits=10, decimal_places=5)
     payment_date = models.DateField(blank=False)
+
+    DisplayField = ['payment_id','invoice_id','method_id','amount','payment_date']
