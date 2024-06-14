@@ -117,14 +117,13 @@ class Project(models.Model):
     tech_id = models.ManyToManyField(Technology)
 
     
-    DisplayField = ['project_id','project_name','duration','client_id','team_id','tech_id']
+    DisplayField = ['project_id','project_name','duration','client_id','team_id']
 
     def __str__(self):
         return self.project_name
     
     class Meta:
         db_table = 'project'
-
 
 
 class Invoice_item(models.Model):
@@ -144,3 +143,15 @@ class Invoice_item(models.Model):
     
     class Meta:
         db_table = 'invoice_item'
+
+
+
+
+class Payment(models.Model):
+    payment_id = models.AutoField(primary_key=True)
+    invoice_id = models.ForeignKey(Invoice,on_delete=models.CASCADE,null=True)
+    method_id = models.ForeignKey(Payment_method,on_delete=models.CASCADE,null=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=5)
+    payment_date = models.DateField(blank=False)
+
+    DisplayField = ['payment_id','invoice_id','method_id','amount','payment_date']
