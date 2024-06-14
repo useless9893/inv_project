@@ -26,12 +26,14 @@ class Invoice(models.Model):
     total_amount = models.IntegerField()
     status = models.CharField(max_length=255)
 
+
+    DisplayField = ['invoice_id','client_id','due_date','total_amount','status']
+
     def __str__(self):
         return self.status
     
     class Meta:
         db_table = 'invoice'
-
 
 
 
@@ -123,4 +125,22 @@ class Project(models.Model):
     class Meta:
         db_table = 'project'
 
+
+class Invoice_item(models.Model):
+    invoice_item_id = models.AutoField(primary_key=True)
+    invoice_id = models.ForeignKey(Invoice,on_delete=models.CASCADE,null=True)
+    project_id = models.ForeignKey(Project,on_delete=models.CASCADE,null=True)
+    item_price = models.IntegerField()
+    tax_id = models.IntegerField()
+    tax_amount = models.IntegerField()
+
+
+    DisplayField = ['invoice_item_id','invoice_id','project_id','item_price','tax_id','tax_amount']
+
+
+    def __str__(self):
+        return self.item_price
+    
+    class Meta:
+        db_table = 'invoice_item'
 

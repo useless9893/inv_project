@@ -28,6 +28,13 @@ class Payment_mthodAdmin(admin.ModelAdmin):
 class TaxAdmin(admin.ModelAdmin):
     list_display = Tax.DisplayField
 
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = Invoice.DisplayField
+
+@admin.register(Invoice_item)
+class Invoice_itemAdmin(admin.ModelAdmin):
+    list_display = Invoice_item.DisplayField
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
@@ -37,5 +44,4 @@ class TeamAdmin(admin.ModelAdmin):
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = Project.DisplayField
-
 

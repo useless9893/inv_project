@@ -70,5 +70,10 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class InvoiceitemSerializer(serializers.ModelSerializer):
 
+
+    class Meta:
+        model = Invoice_item
+        fields = '__all__'
 
