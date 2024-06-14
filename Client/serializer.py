@@ -10,8 +10,11 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-        
 
+
+
+
+        
         
 class Technology_optionSerializer(serializers.ModelSerializer):
 

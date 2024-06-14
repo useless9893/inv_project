@@ -16,6 +16,26 @@ class Client(models.Model):
     class Meta:
         db_table = 'client'
 
+
+
+
+class Invoice(models.Model):
+    invoice_id = models.AutoField(primary_key=True)
+    client_id = models.ForeignKey(Client,on_delete=models.CASCADE,null=True)
+    due_date = models.DateField()
+    total_amount = models.IntegerField()
+    status = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.status
+    
+    class Meta:
+        db_table = 'invoice'
+
+
+
+
+
 class Technology_option(models.Model):
     option_id = models.AutoField(primary_key=True)
     option = models.CharField(max_length=155)

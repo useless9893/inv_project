@@ -45,6 +45,10 @@ class ClientAPI(APIView):
             
 
 
+
+ 
+
+
 class Technology_optionViewSet(viewsets.ModelViewSet):
     queryset = Technology_option.objects.all()
     serializer_class = Technology_optionSerializer
