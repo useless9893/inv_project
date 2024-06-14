@@ -35,7 +35,6 @@ class Invoice(models.Model):
 
 
 
-
 class Technology_option(models.Model):
     option_id = models.AutoField(primary_key=True)
     option = models.CharField(max_length=155)
@@ -122,3 +121,20 @@ class Project(models.Model):
     
     class Meta:
         db_table = 'project'
+
+
+
+class Invoice_item(models.Model):
+    invoice_item_id = models.AutoField(primary_key=True)
+    invoice_id = models.ForeignKey(Invoice,on_delete=models.CASCADE,null=True)
+    project_id = models.ForeignKey(Project,on_delete=models.CASCADE,null=True)
+    item_price = models.IntegerField()
+    tax_id = models.IntegerField()
+    tax_amount = models.IntegerField()
+
+
+    def __str__(self):
+        return self.item_price
+    
+    class Meta:
+        db_table = 'invoice_item'
