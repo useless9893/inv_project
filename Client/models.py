@@ -124,12 +124,3 @@ class Project(models.Model):
         db_table = 'project'
 
 
-
-class Payment(models.Model):
-    payment_id = models.AutoField(primary_key=True)
-    invoice_id = models.ForeignKey(Invoice,on_delete=models.CASCADE,null=True)
-    method_id = models.ForeignKey(Payment_method,on_delete=models.CASCADE,null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=5)
-    payment_date = models.DateField(blank=False)
-
-    DisplayField = ['payment_id','invoice_id','method_id','amount','payment_date']

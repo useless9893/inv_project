@@ -187,3 +187,6 @@ class ProjectAPIView(APIView):
             project_obj.delete()
             return Response({"message":"data deleted successfully "},status=status.HTTP_204_NO_CONTENT)
  
+
+
+
