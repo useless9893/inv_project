@@ -45,6 +45,50 @@ class ClientAPI(APIView):
             
 
 
+
+ 
+class InvoiceAPI(APIView):
+    def get(self,request):
+        invoice_obj = Invoice.objects.all()
+        invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+        return Response(invoice_serializer.data)  
+    
+
+    def post(self,request):
+        validated_data = request.data
+        invoice_serializer = InvoiceSerializer(data=validated_data)
+
+        if invoice_serializer.is_valid():
+           invoice_serializer.save()
+           return Response({"message":"data posted successfully","data":invoice_serializer.data})
+        else:
+            return Response(invoice_serializer._errors)  
+
+
+    def put(self,request):
+        validated_data = request.data
+        invoice_obj = Invoice.objects.get(invoice_id=validated_data['invoice_id'])
+       
+        invoice_serializer = InvoiceSerializer(invoice_obj,data=validated_data,partial=True)
+        
+        if invoice_serializer.is_valid():
+            invoice_serializer.save()
+            return Response({"message":"data updated successfully","data":invoice_serializer.data} )
+        
+        else:
+            return Response(invoice_serializer.errors)   
+
+
+    def delete(self,request):
+        delete = request.GET.get('delete')
+        if delete:
+            invoice_obj = Invoice.objects.get(invoice_id=delete)
+            invoice_obj.delete()
+            return Response({"message":"data deleted successfully "})  
+
+
+
+
 class Technology_optionViewSet(viewsets.ModelViewSet):
     queryset = Technology_option.objects.all()
     serializer_class = Technology_optionSerializer

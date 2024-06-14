@@ -14,6 +14,7 @@ router.register('Tax', TaxViewSet,basename='Tax')
 urlpatterns = [
     path('',include(router.urls)),
     path('client/',ClientAPI.as_view()),
+    path('invoice/',InvoiceAPI.as_view()),
     path('team/',TeamAPIView.as_view()),
     path('project/',ProjectAPIView.as_view()),
 ] 
