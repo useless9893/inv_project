@@ -27,3 +27,12 @@ class Payment_mthodAdmin(admin.ModelAdmin):
 @admin.register(Tax)
 class TaxAdmin(admin.ModelAdmin):
     list_display = Tax.DisplayField
+
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = Invoice.DisplayField
+
+@admin.register(Invoice_item)
+class Invoice_itemAdmin(admin.ModelAdmin):
+    list_display = Invoice_item.DisplayField

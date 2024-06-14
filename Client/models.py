@@ -26,6 +26,9 @@ class Invoice(models.Model):
     total_amount = models.IntegerField()
     status = models.CharField(max_length=255)
 
+
+    DisplayField = ['invoice_id','client_id','due_date','total_amount','status']
+
     def __str__(self):
         return self.status
     
@@ -131,6 +134,9 @@ class Invoice_item(models.Model):
     item_price = models.IntegerField()
     tax_id = models.IntegerField()
     tax_amount = models.IntegerField()
+
+
+    DisplayField = ['invoice_item_id','invoice_id','project_id','item_price','tax_id','tax_amount']
 
 
     def __str__(self):
