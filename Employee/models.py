@@ -13,6 +13,9 @@ class Employee(models.Model):
     state_id=models.ForeignKey(State,on_delete=models.CASCADE)
     country_id=models.ForeignKey(Country,on_delete=models.CASCADE)
     role_id=models.ForeignKey(Role,on_delete=models.CASCADE)
+
+    DisplayField = ['employee_id','user_id','age','salary','id_proof','address','pincode','city_id',
+                    'state_id','country_id','role_id']
     
     def __str__(self):
         return self.user_id.first_name

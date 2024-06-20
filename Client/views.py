@@ -190,6 +190,7 @@ class ProjectAPIView(APIView):
 
 
 
+<<<<<<< HEAD
 class InvoiceitemAPI(APIView):
     def get(self,request):
         invoiceitem_obj = Invoice_item.objects.all()
@@ -229,3 +230,44 @@ class InvoiceitemAPI(APIView):
             invoiceitem_obj.delete()
             return Response({"message":"data deleted successfully "})  
 
+=======
+
+class PaymentAPIView(APIView):
+    def get(self, request):
+        payment_obj = Payment.objects.all()
+        serializer_obj = PaymentSerializer(payment_obj, many=True)
+        return Response(serializer_obj.data)
+    
+
+    def post(self, request):
+        validated_data = request.data
+        serializer_obj = PaymentSerializer(data=validated_data)
+
+        if serializer_obj.is_valid():
+            serializer_obj.save()
+            return Response({"message":"created payment successfully","data":serializer_obj.data},status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer_obj.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+    
+    def put(self, request):
+        validated_data = request.data
+        payment_obj = Payment.objects.get(payment_id = validated_data['payment_id'])
+        serializer_obj = PaymentSerializer(payment_obj ,data=validated_data)
+
+        if serializer_obj.is_valid():
+            serializer_obj.save()
+            return Response({"message":"Updated successfully","data":serializer_obj.data},status=status.HTTP_201_CREATED)
+        
+        else:
+            return Response(serializer_obj.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+
+    def delete(self, request):
+        delete = request.GET.get('delete')
+
+        if delete:
+            payment_obj = Payment.objects.get(payment_id=delete)
+            payment_obj.delete()
+            return Response({"message":"data deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+>>>>>>> 8435e3f9de2e7703a2c7d1381689d181e9e62e6e
