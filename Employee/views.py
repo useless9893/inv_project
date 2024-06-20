@@ -102,6 +102,7 @@ class EmployeeAPI(APIView):
             user_obj = CoreUser.objects.create(**user_data)
             user_obj.set_password(user_data['password'])
             user_obj.save()
+            print('\n\n\n',user_obj,'\n\n\n')
 
             # city_data =  validated_data.pop('city_id')
             city_obj = City.objects.get(city_id=validated_data['city_id'])
@@ -114,7 +115,11 @@ class EmployeeAPI(APIView):
                                                    state_id = state_obj,
                                                    country_id = country_obj,
                                                    role_id = role_obj,
-                                                   **validated_data)
+                                                   pincode=validated_data['pincode'],
+                                                   address=validated_data['address'],
+                                                   id_proof=validated_data['id_proof'],
+                                                   salary=validated_data['salary'],
+                                                   age=validated_data['age'])
             
             return Response({"Message":"Employee created successfully"})
         
@@ -122,16 +127,29 @@ class EmployeeAPI(APIView):
             return Response({"Message":employee_serializer.errors})  
     
 
-    def patch(self,request):
-        validated_data=request.data 
-        employee_update = request.GET.get('employee_update')
-        employee_obj = Employee.objects.get(employee_id=employee_update)
+    # def patch(self,request):
+    #     validated_data=request.data 
+    #     employee_update = request.GET.get('employee_update')
+    #     employee_obj = Employee.objects.get(employee_id=validated_data['employee_update'])
+    #     employee_serializer = EmployeeSerializer(employee_obj,data=validated_data,partial=True)
+    #     if employee_serializer.is_valid():
+    #         employee_serializer.save()
+    #         return Response({'Message':'Data updated successfully'}
+    #                         )
+    #     return Response(employee_serializer.errors) 
+
+    def put(self,request):
+        validated_data = request.data
+        employee_obj = Employee.objects.get(employee_id=validated_data['employee_id'])
+       
         employee_serializer = EmployeeSerializer(employee_obj,data=validated_data,partial=True)
+        
         if employee_serializer.is_valid():
             employee_serializer.save()
-            return Response({'Message':'Data updated successfully'}
-                            )
-        return Response(employee_serializer.errors) 
+            return Response({"message":"data updated successfully","data":employee_serializer.data} )
+        
+        else:
+            return Response(employee_serializer.errors)  
      
     def delete(self,request):
         delete_employee = request.GET.get('delete_employee')

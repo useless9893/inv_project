@@ -17,10 +17,5 @@ urlpatterns = [
     path('invoice/',InvoiceAPI.as_view()),
     path('team/',TeamAPIView.as_view()),
     path('project/',ProjectAPIView.as_view()),
-<<<<<<< HEAD
-    path('invoice_item/',InvoiceitemAPI.as_view())
-=======
     path('payment/',PaymentAPIView.as_view()),
-    
->>>>>>> 8435e3f9de2e7703a2c7d1381689d181e9e62e6e
 ] 
