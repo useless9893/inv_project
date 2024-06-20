@@ -4,6 +4,12 @@ from .serializer import *
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from .filters import ClientFilter
+
+
 
 
 
@@ -42,6 +48,13 @@ class ClientAPI(APIView):
         client_obj = Client.objects.get(client_id=delete_client)
         client_obj.delete()
         return Response({'Message':"Client deleted successfully"})
+    
+
+class ClientListView(generics.ListAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = ClientFilter
             
 
 
