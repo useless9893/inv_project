@@ -1,5 +1,4 @@
 .env
-Core/__pycache__/
 # Employee/__pycache__/
 Employee/migrations/
 Client/migrations/
