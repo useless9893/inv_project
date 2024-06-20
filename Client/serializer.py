@@ -10,8 +10,16 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-        
 
+
+
+
+class InvoiceSerializer(serializers.ModelSerializer):
+   
+    class Meta:
+        model = Invoice
+        fields = '__all__'
+        
         
 class Technology_optionSerializer(serializers.ModelSerializer):
 
@@ -42,4 +50,36 @@ class TaxSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Tax
+        fields = '__all__'
+
+
+
+
+
+class TeamSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Team
+        fields = '__all__'
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = '__all__'
+
+
+class InvoiceitemSerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Invoice_item
+        fields = '__all__'
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Payment
         fields = '__all__'
