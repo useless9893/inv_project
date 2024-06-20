@@ -55,6 +55,11 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
 class Role(models.Model):
     role_id=models.AutoField(primary_key=True)
     role_type=models.CharField(max_length=255)
+
+
+    DisplayField = ['role_id','role_type']
+
+
     
     def __str__(self):
         return self.role_type
@@ -65,6 +70,8 @@ class Role(models.Model):
 class State(models.Model):
     state_id = models.AutoField(primary_key=True)
     state_name=models.CharField(max_length=255)
+
+    DisplayField = ['state_id','state_name']
     
     def __str__(self):
         return self.state_name
@@ -75,6 +82,8 @@ class State(models.Model):
 class City(models.Model):
     city_id=models.AutoField(primary_key=True)
     city_name=models.CharField(max_length=255)
+
+    DisplayField = ['city_id','city_name']
     
     def __str__(self):
         return self.city_name
@@ -85,6 +94,8 @@ class City(models.Model):
 class Country(models.Model):
     country_id=models.AutoField(primary_key=True)
     country_name=models.CharField(max_length=255)
+
+    DisplayField = ['country_id','country_name']
     
     def __str__(self):
         return self.country_name
