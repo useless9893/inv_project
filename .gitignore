@@ -1,12 +1,3 @@
 .env
-# Employee/__pycache__/
-Employee/migrations/
-Client/migrations/
-# Client/__pycache__/
-Vendors/migrations/
-# Vendors/__pycache__/
-Auth_user/migrations/
-# Auth_user/__pycache__/*
-
-
+**/migrations/
 **/__pycache__/
