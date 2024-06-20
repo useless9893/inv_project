@@ -4,6 +4,12 @@ from .serializer import *
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from .filters import ClientFilter
+
+
 
 
 
@@ -42,6 +48,13 @@ class ClientAPI(APIView):
         client_obj = Client.objects.get(client_id=delete_client)
         client_obj.delete()
         return Response({'Message':"Client deleted successfully"})
+    
+
+class ClientListView(generics.ListAPIView):
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = ClientFilter
             
 
 
@@ -189,6 +202,45 @@ class ProjectAPIView(APIView):
  
 
 
+
+class InvoiceitemAPI(APIView):
+    def get(self,request):
+        invoiceitem_obj = Invoice_item.objects.all()
+        invoiceitem_serializer = InvoiceitemSerializer(invoiceitem_obj,many=True)
+        return Response(invoiceitem_serializer.data)  
+    
+
+    def post(self,request):
+        validated_data = request.data
+        invoiceitem_serializer = InvoiceitemSerializer(data=validated_data)
+
+        if invoiceitem_serializer.is_valid():
+           invoiceitem_serializer.save()
+           return Response({"message":"data posted successfully","data":invoiceitem_serializer.data})
+        else:
+            return Response(invoiceitem_serializer._errors)  
+
+
+    def put(self,request):
+        validated_data = request.data
+        invoiceitem_obj = Invoice_item.objects.get(invoice_item_id=validated_data['invoice_item_id'])
+       
+        invoiceitem_serializer = InvoiceitemSerializer(invoiceitem_obj,data=validated_data,partial=True)
+        
+        if invoiceitem_serializer.is_valid():
+            invoiceitem_serializer.save()
+            return Response({"message":"data updated successfully","data":invoiceitem_serializer.data} )
+        
+        else:
+            return Response(invoiceitem_serializer.errors)   
+
+
+    def delete(self,request):
+        delete = request.GET.get('delete')
+        if delete:
+            invoiceitem_obj = Invoice_item.objects.get(invoice_item_id=delete)
+            invoiceitem_obj.delete()
+            return Response({"message":"data deleted successfully "})  
 
 
 class PaymentAPIView(APIView):

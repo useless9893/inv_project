@@ -131,7 +131,7 @@ class Invoice_item(models.Model):
     invoice_id = models.ForeignKey(Invoice,on_delete=models.CASCADE,null=True)
     project_id = models.ForeignKey(Project,on_delete=models.CASCADE,null=True)
     item_price = models.IntegerField()
-    tax_id = models.IntegerField()
+    tax_id = models.ForeignKey(Tax,on_delete=models.CASCADE,null=True)
     tax_amount = models.IntegerField()
 
 
@@ -139,7 +139,7 @@ class Invoice_item(models.Model):
 
 
     def __str__(self):
-        return self.item_price
+        return f"InvoiceItem {self.invoice_item_id}"
     
     class Meta:
         db_table = 'invoice_item'
