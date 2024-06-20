@@ -45,6 +45,50 @@ class ClientAPI(APIView):
             
 
 
+
+ 
+class InvoiceAPI(APIView):
+    def get(self,request):
+        invoice_obj = Invoice.objects.all()
+        invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+        return Response(invoice_serializer.data)  
+    
+
+    def post(self,request):
+        validated_data = request.data
+        invoice_serializer = InvoiceSerializer(data=validated_data)
+
+        if invoice_serializer.is_valid():
+           invoice_serializer.save()
+           return Response({"message":"data posted successfully","data":invoice_serializer.data})
+        else:
+            return Response(invoice_serializer._errors)  
+
+
+    def put(self,request):
+        validated_data = request.data
+        invoice_obj = Invoice.objects.get(invoice_id=validated_data['invoice_id'])
+       
+        invoice_serializer = InvoiceSerializer(invoice_obj,data=validated_data,partial=True)
+        
+        if invoice_serializer.is_valid():
+            invoice_serializer.save()
+            return Response({"message":"data updated successfully","data":invoice_serializer.data} )
+        
+        else:
+            return Response(invoice_serializer.errors)   
+
+
+    def delete(self,request):
+        delete = request.GET.get('delete')
+        if delete:
+            invoice_obj = Invoice.objects.get(invoice_id=delete)
+            invoice_obj.delete()
+            return Response({"message":"data deleted successfully "})  
+
+
+
+
 class Technology_optionViewSet(viewsets.ModelViewSet):
     queryset = Technology_option.objects.all()
     serializer_class = Technology_optionSerializer
@@ -143,3 +187,45 @@ class ProjectAPIView(APIView):
             project_obj.delete()
             return Response({"message":"data deleted successfully "},status=status.HTTP_204_NO_CONTENT)
  
+
+
+
+
+class PaymentAPIView(APIView):
+    def get(self, request):
+        payment_obj = Payment.objects.all()
+        serializer_obj = PaymentSerializer(payment_obj, many=True)
+        return Response(serializer_obj.data)
+    
+
+    def post(self, request):
+        validated_data = request.data
+        serializer_obj = PaymentSerializer(data=validated_data)
+
+        if serializer_obj.is_valid():
+            serializer_obj.save()
+            return Response({"message":"created payment successfully","data":serializer_obj.data},status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer_obj.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+    
+    def put(self, request):
+        validated_data = request.data
+        payment_obj = Payment.objects.get(payment_id = validated_data['payment_id'])
+        serializer_obj = PaymentSerializer(payment_obj ,data=validated_data)
+
+        if serializer_obj.is_valid():
+            serializer_obj.save()
+            return Response({"message":"Updated successfully","data":serializer_obj.data},status=status.HTTP_201_CREATED)
+        
+        else:
+            return Response(serializer_obj.errors,status=status.HTTP_400_BAD_REQUEST)
+        
+
+    def delete(self, request):
+        delete = request.GET.get('delete')
+
+        if delete:
+            payment_obj = Payment.objects.get(payment_id=delete)
+            payment_obj.delete()
+            return Response({"message":"data deleted successfully"},status=status.HTTP_204_NO_CONTENT)

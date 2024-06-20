@@ -27,15 +27,26 @@ class Payment_mthodAdmin(admin.ModelAdmin):
 @admin.register(Tax)
 class TaxAdmin(admin.ModelAdmin):
     list_display = Tax.DisplayField
-    
-    
+
+@admin.register(Invoice)
+class InvoiceAdmin(admin.ModelAdmin):
+    list_display = Invoice.DisplayField
+
+@admin.register(Invoice_item)
+class Invoice_itemAdmin(admin.ModelAdmin):
+    list_display = Invoice_item.DisplayField
+
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     list_display = Team.DisplayField
-    
-    
+
+
 @admin.register(Project)
 class ProjectAdmin(admin.ModelAdmin):
     list_display = Project.DisplayField
-    list_editable = ['duration']
-    
+
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = Payment.DisplayField
