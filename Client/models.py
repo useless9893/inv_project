@@ -95,7 +95,7 @@ class Tax(models.Model):
 
 class Team(models.Model):
     team_id = models.AutoField(primary_key=True)
-    team_name = models.CharField(max_length=155)
+    team_name = models.CharField(max_length=150)
 
     DisplayField = ['team_id','team_name']
 
