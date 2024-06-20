@@ -1,1 +1,5 @@
 .env
+.Employee/__pycache__
+.Employee/migrations
+.Employee/migrations
+.Client/migrations
