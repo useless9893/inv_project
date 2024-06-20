@@ -155,3 +155,9 @@ class Payment(models.Model):
     payment_date = models.DateField(blank=False)
 
     DisplayField = ['payment_id','invoice_id','method_id','amount','payment_date']
+
+    def __str__(self):
+        return self.payment_id
+    
+    class Meta:
+        db_table = 'payment'
