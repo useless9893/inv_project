@@ -10,4 +10,4 @@ Auth_user/migrations/
 # Auth_user/__pycache__/*
 
 
-**/__pycache__/
+__pycache__/
