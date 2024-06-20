@@ -61,10 +61,22 @@ class ClientListView(generics.ListAPIView):
 
  
 class InvoiceAPI(APIView):
-    def get(self,request):
-        invoice_obj = Invoice.objects.all()
-        invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
-        return Response(invoice_serializer.data)  
+    def get(self,request ):
+        sort_by = request.GET.get('sort_by')
+        if sort_by=='Ascending':
+            invoice_obj = Invoice.objects.raw("SELECT * FROM invoice ORDER BY total_amount;")
+            invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+            return Response(invoice_serializer.data)
+        elif sort_by=='descending':
+            invoice_obj = Invoice.objects.raw("SELECT * FROM invoice ORDER BY total_amount desc;")
+            invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+            return Response(invoice_serializer.data)
+        else:
+            invoice_obj = Invoice.objects.raw("SELECT * FROM invoice")
+            invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+            return Response(invoice_serializer.data)
+            
+              
     
 
     def post(self,request):
