@@ -10,4 +10,4 @@ class CoreUserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = CoreUser  
-        fields = ['user_name','first_name','last_name','email','contact']
+        fields = ["user_id",'user_name','first_name','last_name','email','contact']
