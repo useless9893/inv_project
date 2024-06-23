@@ -81,7 +81,7 @@ class Payment_method(models.Model):
 class Tax(models.Model):
     tax_id = models.AutoField(primary_key=True)
     tax_name = models.CharField(max_length=155)
-    rate = models.IntegerField()
+    rate = models.DecimalField(decimal_places=2,max_digits=5)
 
     DisplayField = ['tax_id','tax_name','rate']
 
