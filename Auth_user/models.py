@@ -67,9 +67,21 @@ class Role(models.Model):
     class Meta:
         db_table = 'role'
 
+class Country(models.Model):
+    country_id=models.AutoField(primary_key=True)
+    country_name=models.CharField(max_length=255)
+
+    DisplayField = ['country_id','country_name']
+    
+    def __str__(self):
+        return self.country_name
+    
+    class Meta:
+        db_table = 'country'
 class State(models.Model):
     state_id = models.AutoField(primary_key=True)
     state_name=models.CharField(max_length=255)
+    country = models.ForeignKey(Country,on_delete=models.CASCADE,null=True,related_name='state_country')
 
     DisplayField = ['state_id','state_name']
     
@@ -82,6 +94,7 @@ class State(models.Model):
 class City(models.Model):
     city_id=models.AutoField(primary_key=True)
     city_name=models.CharField(max_length=255)
+    state = models.ForeignKey(State,on_delete=models.CASCADE,null=True,related_name='city_state')
 
     DisplayField = ['city_id','city_name']
     
@@ -91,14 +104,4 @@ class City(models.Model):
     class Meta:
         db_table = 'city'
     
-class Country(models.Model):
-    country_id=models.AutoField(primary_key=True)
-    country_name=models.CharField(max_length=255)
-
-    DisplayField = ['country_id','country_name']
-    
-    def __str__(self):
-        return self.country_name
-    
-    class Meta:
-        db_table = 'country'        
+        
