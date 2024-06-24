@@ -8,9 +8,7 @@ from rest_framework import status
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from .filters import ClientFilter
-# from .filters import ProjectFilter
-# from .filters import InvoiceFilter
+from .filters import *
 
 
 
@@ -67,10 +65,22 @@ class ClientListView(generics.ListAPIView):
 
  
 class InvoiceAPI(APIView):
-    def get(self,request):
-        invoice_obj = Invoice.objects.all()
-        invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
-        return Response(invoice_serializer.data)  
+    def get(self,request ):
+        sort_by = request.GET.get('sort_by')
+        if sort_by=='Ascending':
+            invoice_obj = Invoice.objects.raw("SELECT * FROM invoice ORDER BY total_amount;")
+            invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+            return Response(invoice_serializer.data)
+        elif sort_by=='descending':
+            invoice_obj = Invoice.objects.raw("SELECT * FROM invoice ORDER BY total_amount desc;")
+            invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+            return Response(invoice_serializer.data)
+        else:
+            invoice_obj = Invoice.objects.raw("SELECT * FROM invoice")
+            invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
+            return Response(invoice_serializer.data)
+            
+              
     
 
     def post(self,request):
@@ -351,3 +361,16 @@ class PaymentAPIView(APIView):
             payment_obj = Payment.objects.get(payment_id=delete)
             payment_obj.delete()
             return Response({"message":"data deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+        
+
+class TechnologyListView(generics.ListAPIView):
+    queryset = Technology.objects.all()
+    serializer_class = TechnologySerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = TechnologyFilter
+
+class TeamListView(generics.ListAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = TeamFilter

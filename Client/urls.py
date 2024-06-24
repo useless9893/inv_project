@@ -21,7 +21,9 @@ urlpatterns = [
     path('project/',ProjectAPIView.as_view()),
     path('project_filter/',projectFilter),
     path('invoice_item/',InvoiceitemAPI.as_view()),
-    path('payment/',PaymentAPIView.as_view())
+    path('payment/',PaymentAPIView.as_view()),
+    path('technology_filter/',TechnologyListView.as_view()),
+    path('team_filter/',TeamListView.as_view())
     
 ] 
 
