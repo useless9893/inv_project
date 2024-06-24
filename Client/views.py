@@ -2,6 +2,7 @@ from rest_framework.response import Response
 from .models import * 
 from .serializer import *
 from rest_framework import viewsets
+from rest_framework.decorators import api_view
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework import generics
@@ -60,6 +61,8 @@ class ClientListView(generics.ListAPIView):
 
 
 
+
+
  
 class InvoiceAPI(APIView):
     def get(self,request ):
@@ -111,6 +114,28 @@ class InvoiceAPI(APIView):
             invoice_obj = Invoice.objects.get(invoice_id=delete)
             invoice_obj.delete()
             return Response({"message":"data deleted successfully "})  
+        
+
+# class InvoiceListView(generics.ListAPIView):  # Apply Filtering in Invoice Model 
+#     queryset = Invoice.objects.all()
+#     serializer_class = InvoiceSerializer
+#     filter_backends = [SearchFilter , DjangoFilterBackend]
+#     fielterset_class = InvoiceFilter
+
+
+@api_view(['GET'])                          # Apply Filtering in Invoice Model
+def invoicefilter(request , id=None):
+    if request.method=="GET":
+        invoive_obj = Invoice.objects.filter(invoice_id=id)
+        serializer_obj = InvoiceSerializer(invoive_obj, many=True)
+        return Response(serializer_obj.data)
+        
+
+
+
+
+
+
 
 
 
@@ -134,6 +159,9 @@ class Payment_methodViewSet(viewsets.ModelViewSet):
 class TaxViewSet(viewsets.ModelViewSet):
     queryset = Tax.objects.all()
     serializer_class = TaxSerializer
+
+
+
 
 
 class TeamAPIView(APIView):
@@ -177,6 +205,9 @@ class TeamAPIView(APIView):
 
 
 
+
+
+
 class ProjectAPIView(APIView):
     def get(self, request):
         projects = Project.objects.all()
@@ -212,7 +243,30 @@ class ProjectAPIView(APIView):
             project_obj = Project.objects.get(project_id = delete)
             project_obj.delete()
             return Response({"message":"data deleted successfully "},status=status.HTTP_204_NO_CONTENT)
+        
+
+# class projectListView(generics.ListAPIView):  # Apply Filtering in Project Model 
+#     queryset = Project.objects.all()
+#     serializer_class = ProjectSerializer
+#     filter_backends = [SearchFilter , DjangoFilterBackend]
+#     filterset_class = ProjectFilter
  
+
+
+@api_view(['GET'])                         # Apply Filtering in Project Model
+def projectFilter(request):
+
+    if request.method == 'GET':
+        project_name=request.GET.get("project_name" , None)
+        project_obj = Project.objects.filter(project_name=project_name)
+        serializer_obj = ProjectSerializer(project_obj,many=True)
+        return Response(serializer_obj.data)
+
+
+
+
+
+
 
 
 
@@ -254,6 +308,19 @@ class InvoiceitemAPI(APIView):
             invoiceitem_obj = Invoice_item.objects.get(invoice_item_id=delete)
             invoiceitem_obj.delete()
             return Response({"message":"data deleted successfully "})  
+        
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 class PaymentAPIView(APIView):
