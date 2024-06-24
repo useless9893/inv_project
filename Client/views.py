@@ -123,14 +123,22 @@ class InvoiceAPI(APIView):
 #     fielterset_class = InvoiceFilter
 
 
-@api_view(['GET'])                          # Apply Filtering in Invoice Model
-def invoicefilter(request , id=None):
-    if request.method=="GET":
-        invoive_obj = Invoice.objects.filter(invoice_id=id)
-        serializer_obj = InvoiceSerializer(invoive_obj, many=True)
-        return Response(serializer_obj.data)
+# @api_view(['GET'])                          # Apply Filtering in Invoice Model
+# def invoicefilter(request , id=None):
+#     if request.method=="GET":
+#         invoive_obj = Invoice.objects.filter(invoice_id=id)
+#         serializer_obj = InvoiceSerializer(invoive_obj, many=True)
+#         return Response(serializer_obj.data)
         
 
+@api_view(['GET'])                       # Apply Filtering in Invoice Model
+def invoicefilter(request):
+    invoice = request.GET.get('invoice_id')
+    if invoice:
+        invoice_obj = Invoice.objects.filter(invoice_id = invoice)
+        invoice_serializer = InvoiceSerializer(invoice_obj,many = True)
+        return Response(invoice_serializer.data)
+ 
 
 
 
@@ -261,6 +269,7 @@ def projectFilter(request):
         project_obj = Project.objects.filter(project_name=project_name)
         serializer_obj = ProjectSerializer(project_obj,many=True)
         return Response(serializer_obj.data)
+
 
 
 
