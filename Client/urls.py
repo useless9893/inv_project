@@ -12,13 +12,15 @@ router.register('Tax', TaxViewSet,basename='Tax')
 
 
 urlpatterns = [
-    path('',include(router.urls)),
+    path('api',include(router.urls)),
     path('client/',ClientAPI.as_view()),
     path('client_filter/', ClientListView.as_view()),
     path('invoice/',InvoiceAPI.as_view()),
     path('team/',TeamAPIView.as_view()),
     path('project/',ProjectAPIView.as_view()),
     path('invoice_item/',InvoiceitemAPI.as_view()),
-    path('payment/',PaymentAPIView.as_view())
+    path('payment/',PaymentAPIView.as_view()),
+    path('technology_filter/',TechnologyListView.as_view()),
+    path('team_filter/',TeamListView.as_view())
     
 ] 

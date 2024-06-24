@@ -7,7 +7,8 @@ from rest_framework import status
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from .filters import ClientFilter
+from .filters import *
+
 
 
 
@@ -281,3 +282,16 @@ class PaymentAPIView(APIView):
             payment_obj = Payment.objects.get(payment_id=delete)
             payment_obj.delete()
             return Response({"message":"data deleted successfully"},status=status.HTTP_204_NO_CONTENT)
+        
+
+class TechnologyListView(generics.ListAPIView):
+    queryset = Technology.objects.all()
+    serializer_class = TechnologySerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = TechnologyFilter
+
+class TeamListView(generics.ListAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = TeamFilter
