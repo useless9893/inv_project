@@ -5,7 +5,7 @@ from .views import *
 
 urlpatterns = [
     path('employee/',EmployeeAPI.as_view()),
-    path('employee_Filter/',EmployeeListView.as_view())
+    path('employee_filter/',EmployeeFilter)
 
  
 
