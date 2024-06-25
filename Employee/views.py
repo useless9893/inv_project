@@ -4,11 +4,12 @@ from .models import *
 from .serializer import *
 from rest_framework import viewsets
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
-from .filters import EmployeeFilter
+
 
 
 class EmployeeAPI(APIView):
@@ -72,11 +73,23 @@ class EmployeeAPI(APIView):
 
 
 
-class EmployeeListView(generics.ListAPIView):
-    queryset = Employee.objects.all()
-    serializer_class = EmployeeSerializer
-    filter_backends = [SearchFilter , DjangoFilterBackend]
-    filterset_class = EmployeeFilter
+# class EmployeeListView(generics.ListAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+#     filter_backends = [SearchFilter , DjangoFilterBackend]
+#     filterset_class = EmployeeFilter
+
+
+@api_view(['GET'])                  # Apply filtering in Employee model
+def EmployeeFilter(request):
+    employee = request.GET.get('first_name',None)
+
+    if employee:
+        employee_obj = Employee.objects.filter(user_id__first_name=employee)
+        serializer_obj = EmployeeSerializer(employee_obj,many=True)
+        return Response(serializer_obj.data)
+
+
 
 
 

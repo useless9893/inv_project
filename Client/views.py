@@ -67,7 +67,7 @@ class ClientListView(generics.ListAPIView):
 class InvoiceAPI(APIView):
     def get(self,request ):
         sort_by = request.GET.get('sort_by')
-        if sort_by=='Ascending':
+        if sort_by=='ascending':
             invoice_obj = Invoice.objects.raw("SELECT * FROM invoice ORDER BY total_amount;")
             invoice_serializer = InvoiceSerializer(invoice_obj,many=True)
             return Response(invoice_serializer.data)
