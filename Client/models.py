@@ -30,7 +30,7 @@ class Invoice(models.Model):
     DisplayField = ['invoice_id','client_id','due_date','total_amount','status']
 
     def __str__(self):
-        return self.status
+        return self.client_id.client_name
     
     class Meta:
         db_table = 'invoice'
@@ -86,7 +86,7 @@ class Tax(models.Model):
     DisplayField = ['tax_id','tax_name','rate']
 
     def __str__(self):
-        return self.tax_name
+        return f'{self.tax_name} - {self.rate}%'
     
     class Meta:
         db_table = 'tax'
