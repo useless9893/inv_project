@@ -31,10 +31,11 @@ class Technology_optionSerializer(serializers.ModelSerializer):
 
 
 class TechnologySerializer(serializers.ModelSerializer):
+    option_name = serializers.CharField(source='option_id.option',read_only=True)
 
     class Meta:
         model = Technology
-        fields = '__all__'
+        fields =['tech_id','name','option_id','option_name']
 
 
 

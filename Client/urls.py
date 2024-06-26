@@ -4,10 +4,10 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 
-router.register('Technology_option', Technology_optionViewSet,basename='Technology_option')
-router.register('Technology', TechnologyViewSet,basename='Technology')
-router.register('Payment_method', Payment_methodViewSet,basename='Payment_method')
-router.register('Tax', TaxViewSet,basename='Tax')
+router.register('technology_option', Technology_optionViewSet,basename='Technology_option')
+router.register('technology', TechnologyViewSet,basename='Technology')
+router.register('payment_method', Payment_methodViewSet,basename='Payment_method')
+router.register('tax', TaxViewSet,basename='Tax')
 
 
 
