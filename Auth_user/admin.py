@@ -1,12 +1,11 @@
 from django.contrib import admin
 from .models import *
 
-
+@admin.register(CoreUser)
 class CoreUserAdmin(admin.ModelAdmin):
-    list_display = ('first_name','last_name','email','contact')
+    list_display = CoreUser.DisplayField
     list_editable = ('email','contact')
-
-admin.site.register(CoreUser,CoreUserAdmin)
+ 
 
 @admin.register(Role)
 class RoleAdmin(admin.ModelAdmin):
