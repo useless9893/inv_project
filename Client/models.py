@@ -29,8 +29,8 @@ class Invoice(models.Model):
 
     DisplayField = ['invoice_id','client_id','due_date','total_amount','status']
 
-    def __str__(self):
-        return self.client_id.client_name
+    # def __str__(self):
+    #     return self.client_id.client_name
     
     class Meta:
         db_table = 'invoice'
