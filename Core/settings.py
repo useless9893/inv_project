@@ -42,6 +42,13 @@ CORS_ALLOW_METHODS = (
     "PUT",
 )
 
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'ngrok-skip-browser-warning',
+]
+
+
+
 MEDIA_ROOT = os.path.join(BASE_DIR ,'media' ) 
 MEDIA_URL = '/media/'
 

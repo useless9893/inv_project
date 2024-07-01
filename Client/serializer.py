@@ -10,15 +10,15 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-
-
-
+    
 
 class InvoiceSerializer(serializers.ModelSerializer):
+    client_id = ClientSerializer(read_only=True)
    
     class Meta:
         model = Invoice
         fields = '__all__'
+        
         
         
 class Technology_optionSerializer(serializers.ModelSerializer):
