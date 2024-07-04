@@ -3,11 +3,13 @@ from  .models import *
 
 class ClientFilter(django_filters.FilterSet):
     client_name = django_filters.CharFilter(field_name='client_name', lookup_expr='istartswith')
+    client_id = django_filters.NumberFilter(field_name='client_id', lookup_expr='istartswith')
+    user_name = django_filters.CharFilter(field_name='user_id__user_name', lookup_expr='istartswith')
     
 
     class Meta:
         model = Client
-        fields = ['client_name']
+        fields = ['client_name','client_id','user_name']
 
 
 

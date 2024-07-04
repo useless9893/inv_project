@@ -407,3 +407,34 @@ class TeamListView(generics.ListAPIView):
     serializer_class = TeamSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
     filterset_class = TeamFilter
+
+
+
+
+
+## Chart using plotly
+import plotly.express as px
+from plotly.offline import plot
+from plotly.graph_objs import Scatter
+import plotly.graph_objects as go
+
+@api_view(['GET'])
+def invoice_chart(request):
+    if request.method == 'GET':
+        inv_obj = Invoice.objects.all()
+        inv_serializer = InvoiceSerializer(inv_obj,many=True).data
+        total_amount = []
+        due_data = []
+        for i in inv_serializer:
+            total_amount.append(i['total_amount'])
+            due_data.append(i['due_date'])
+        #     print('\n\n\n',i['total_amount'],'\n\n\n')
+        #     print('\n\n\n',i['due_date'],'\n\n\n')
+        #     # fig = px.line(inv_serializer, x="year", y="lifeExp", title='Life expectancy in Canada')
+        # print(total_amount)
+        # print(due_data)
+        
+        plot_div = plot([Scatter(x=total_amount, y=due_data, mode='lines', name='test', opacity=0.8, marker_color='green')], output_type='div')
+        return Response(plot_div)
+        # return Response(inv_serializer)
+        

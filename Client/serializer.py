@@ -10,7 +10,9 @@ class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
         fields = '__all__'
-    
+     
+
+
 
 class InvoiceSerializer(serializers.ModelSerializer):
     client_id = ClientSerializer(read_only=True)
