@@ -26,9 +26,7 @@ class EmployeeAPI(APIView):
             user_obj = CoreUser.objects.create(**user_data)
             user_obj.set_password(user_data['password'])
             user_obj.save()
-            print('\n\n\n',user_obj,'\n\n\n')
-
-            # city_data =  validated_data.pop('city_id')
+            
             city_obj = City.objects.get(city_id=validated_data['city_id'])
             state_obj = State.objects.get(state_id=validated_data['state_id'])
             country_obj = Country.objects.get(country_id=validated_data['country_id'])
@@ -67,7 +65,7 @@ class EmployeeAPI(APIView):
      
     def delete(self,request):
         delete_employee = request.GET.get('delete_employee')
-        employee_obj = Employee.objects.get(employee_id=delete_employee)
+        employee_obj = CoreUser.objects.get(user_id=delete_employee)
         employee_obj.delete()
         return Response({'Message':"Employee deleted successfully"})
 

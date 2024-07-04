@@ -29,8 +29,8 @@ class Invoice(models.Model):
 
     DisplayField = ['invoice_id','client_id','due_date','total_amount','status']
 
-    def __str__(self):
-        return self.status
+    # def __str__(self):
+    #     return self.client_id.client_name
     
     class Meta:
         db_table = 'invoice'
@@ -81,12 +81,12 @@ class Payment_method(models.Model):
 class Tax(models.Model):
     tax_id = models.AutoField(primary_key=True)
     tax_name = models.CharField(max_length=155)
-    rate = models.IntegerField()
+    rate = models.DecimalField(decimal_places=2,max_digits=5)
 
     DisplayField = ['tax_id','tax_name','rate']
 
     def __str__(self):
-        return self.tax_name
+        return f'{self.tax_name} - {self.rate}%'
     
     class Meta:
         db_table = 'tax'
