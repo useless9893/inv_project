@@ -8,6 +8,9 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework import viewsets
+from rest_framework.authentication import BaseAuthentication
+from .permision import CoreUserPermision
+
 
 
 
@@ -15,6 +18,8 @@ from rest_framework import viewsets
 def get_coreuser(request):
     obj = CoreUser.objects.all()
     ser = CoreUserSerializer(obj,many=True)
+    # authentication_class = [BaseAuthentication]
+    # permission_class = [CoreUserPermision]
     return Response(ser.data)
 
 
@@ -57,9 +62,12 @@ class CityViewSet(viewsets.ModelViewSet):
     queryset = City.objects.all()
     serializer_class = CitySerializer
     
+
 class StateViewSet(viewsets.ModelViewSet):
     queryset = State.objects.all()
     serializer_class = StateSerializer
+
+
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
