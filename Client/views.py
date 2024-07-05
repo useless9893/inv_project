@@ -14,6 +14,7 @@ from .filters import *
 
 
 
+
 class ClientAPI(APIView):
     def get(self,request):
         client_obj = Client.objects.all()

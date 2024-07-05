@@ -30,6 +30,7 @@ class LoginView(APIView):
                 custom_claims['user_id'] = user.user_id
                 custom_claims['first_name'] = user.first_name
                 custom_claims['last_name'] = user.last_name
+                custom_claims['role_id']= user.role_id
                 access_token['custom_claims'] = custom_claims
                 return Response({
                     'refresh': str(refresh),

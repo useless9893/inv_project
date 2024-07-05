@@ -5,9 +5,13 @@ from .serializer import *
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from .permissions import IsEmployeeOwner
 
 
 class EmployeeAPI(APIView):
+    authentication_classes = [ TokenAuthentication ]
+    permission_classes = [IsEmployeeOwner]
     def get(self,request):
         employee_obj = Employee.objects.all()
         employee_serializer = EmployeeSerializer(employee_obj,many=True)
