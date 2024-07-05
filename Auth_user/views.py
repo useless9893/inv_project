@@ -8,6 +8,15 @@ from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 
+
+
+@api_view(['GET'])
+def get_coreuser(request):
+    obj = CoreUser.objects.all()
+    ser = CoreUserSerializer(obj,many=True)
+    return Response(ser.data)
+
+
 class LoginView(APIView):
     def post(self,request):
         try:
@@ -18,6 +27,7 @@ class LoginView(APIView):
                 password = serializer.data['password']
                 print(f'Profile Name: {username}, Password: {password}')
                 user = authenticate(username=username,password=password)
+                print('\n\n\n')
                 print(f'Authenticated User: {user}')
                 if user is None:
                     return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
@@ -30,6 +40,7 @@ class LoginView(APIView):
                 custom_claims['user_id'] = user.user_id
                 custom_claims['first_name'] = user.first_name
                 custom_claims['last_name'] = user.last_name
+                # custom_claims['role_type'] = user.role
                 access_token['custom_claims'] = custom_claims
                 return Response({
                     'refresh': str(refresh),
@@ -40,4 +51,3 @@ class LoginView(APIView):
             
         except Exception as e:
             return Response({"message":str(e)}) 
- 
