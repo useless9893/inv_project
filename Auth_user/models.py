@@ -53,7 +53,7 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
             return f'{self.first_name} {self.last_name}'
 
 
-        DisplayField = ['user_name','first_name','last_name','email','contact']
+        DisplayField = ['user_id','user_name','first_name','last_name','email','contact']
     
 
 
