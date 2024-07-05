@@ -4,14 +4,16 @@ from .models import *
 from .serializer import *
 from rest_framework import viewsets
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
-from .permissions import IsEmployeeOwner
+from .permissions import AdminOrReadOnly,EmployeeUserOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 
 
 class EmployeeAPI(APIView):
     authentication_classes = [ TokenAuthentication ]
-    permission_classes = [IsEmployeeOwner]
+    permission_classes = [ IsAuthenticated,AdminOrReadOnly, EmployeeUserOrReadOnly ]
     def get(self,request):
         employee_obj = Employee.objects.all()
         employee_serializer = EmployeeSerializer(employee_obj,many=True)
@@ -25,9 +27,7 @@ class EmployeeAPI(APIView):
             user_obj = CoreUser.objects.create(**user_data)
             user_obj.set_password(user_data['password'])
             user_obj.save()
-            print('\n\n\n',user_obj,'\n\n\n')
-
-            # city_data =  validated_data.pop('city_id')
+            
             city_obj = City.objects.get(city_id=validated_data['city_id'])
             state_obj = State.objects.get(state_id=validated_data['state_id'])
             country_obj = Country.objects.get(country_id=validated_data['country_id'])
@@ -69,6 +69,25 @@ class EmployeeAPI(APIView):
         employee_obj = Employee.objects.get(employee_id=delete_employee)
         employee_obj.delete()
         return Response({'Message':"Employee deleted successfully"})
+
+
+
+# class EmployeeListView(generics.ListAPIView):
+#     queryset = Employee.objects.all()
+#     serializer_class = EmployeeSerializer
+#     filter_backends = [SearchFilter , DjangoFilterBackend]
+#     filterset_class = EmployeeFilter
+
+
+@api_view(['GET'])                  # Apply filtering in Employee model
+def EmployeeFilter(request):
+    employee = request.GET.get('first_name',None)
+
+    if employee:
+        employee_obj = Employee.objects.filter(user_id__first_name=employee)
+        serializer_obj = EmployeeSerializer(employee_obj,many=True)
+        return Response(serializer_obj.data)
+
 
 
 

@@ -33,6 +33,22 @@ DEBUG = os.environ.get('DEBUG') == 'True'
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS=True
 
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'ngrok-skip-browser-warning',
+]
+
+
+
 MEDIA_ROOT = os.path.join(BASE_DIR ,'media' ) 
 MEDIA_URL = '/media/'
 
@@ -53,9 +69,7 @@ INSTALLED_APPS = [
     'rest_framework',
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
-    'django_filters',
-    'rest_framework.authtoken'
-    
+    'django_filters'
     ]
 
 MIDDLEWARE = [
@@ -202,11 +216,15 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 
+
+ 
 
 
 JAZZMIN_SETTINGS = {
@@ -264,6 +282,4 @@ JAZZMIN_SETTINGS = {
 
    # Whether to show the UI customizer on the sidebar
     "show_ui_builder": True,
-    
-
 }

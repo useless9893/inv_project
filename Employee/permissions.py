@@ -1,10 +1,19 @@
-from rest_framework.permissions import BasePermission
+from rest_framework import permissions
 
 
-class IsEmployeeOwner(BasePermission):
+class AdminOrReadOnly(permissions.IsAdminUser):
     def has_permission(self, request, view):
-        return True
+         if request.method in permissions.SAFE_METHODS:
+            True
+         else:
+            return bool(request.user and request.user.is_staff)
     
+
+
+class EmployeeUserOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.Employee == request.Employee
+        if request.method in permissions.SAFE_METHODS:
+            True
+        else:
+            return obj.empoloyee_user == request.user
     

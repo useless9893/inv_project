@@ -37,6 +37,8 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
         last_name = models.CharField(max_length=155)
         email = models.EmailField(null=True,unique=True)
         contact =PhoneNumberField(null=True,unique=True)
+        is_client=models.BooleanField(default=False,null=True)
+        is_employee=models.BooleanField(default=False,null=True)
         is_admin=models.BooleanField(default=False)
         is_staff=models.BooleanField(default=False)
 
@@ -44,11 +46,15 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
         REQUIRED_FIELDS = ['first_name','last_name']
         objects = UserManager() 
         
-        class Meta:
+        class Meta: 
             db_table = 'core_user'
             
         def __str__(self):
-            return f'{self.first_name} {self.last_name}'    
+            return f'{self.first_name} {self.last_name}'
+
+
+        DisplayField = ['user_name','first_name','last_name','email','contact']
+    
 
 
 
@@ -67,9 +73,21 @@ class Role(models.Model):
     class Meta:
         db_table = 'role'
 
+class Country(models.Model):
+    country_id=models.AutoField(primary_key=True)
+    country_name=models.CharField(max_length=255)
+
+    DisplayField = ['country_id','country_name']
+    
+    def __str__(self):
+        return self.country_name
+    
+    class Meta:
+        db_table = 'country'
 class State(models.Model):
     state_id = models.AutoField(primary_key=True)
     state_name=models.CharField(max_length=255)
+    country = models.ForeignKey(Country,on_delete=models.CASCADE,null=True,related_name='state_country')
 
     DisplayField = ['state_id','state_name']
     
@@ -82,6 +100,7 @@ class State(models.Model):
 class City(models.Model):
     city_id=models.AutoField(primary_key=True)
     city_name=models.CharField(max_length=255)
+    state = models.ForeignKey(State,on_delete=models.CASCADE,null=True,related_name='city_state')
 
     DisplayField = ['city_id','city_name']
     
@@ -91,14 +110,4 @@ class City(models.Model):
     class Meta:
         db_table = 'city'
     
-class Country(models.Model):
-    country_id=models.AutoField(primary_key=True)
-    country_name=models.CharField(max_length=255)
-
-    DisplayField = ['country_id','country_name']
-    
-    def __str__(self):
-        return self.country_name
-    
-    class Meta:
-        db_table = 'country'        
+        
