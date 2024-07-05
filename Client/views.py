@@ -9,6 +9,8 @@ from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import *
+import datetime
+import calendar
 
 
 
@@ -22,32 +24,48 @@ class ClientAPI(APIView):
         return Response(client_serializer.data)
     
     def post(self,request):
-        validated_data = request.data 
+        validated_data = request.data
+        client_data = {
+            'client_name': validated_data.get('client_name'),
+            'company_address': validated_data.get('company_address'),
+        }
         client_serializer = ClientSerializer(data=validated_data)
         if client_serializer.is_valid():
-            user_data = validated_data.pop('user_id')
+            user_data = validated_data.pop('user_id',{})
             user_obj = CoreUser.objects.create(**user_data)
-            user_obj.set_password(user_data['password'])
+            user_obj.set_password(user_data.get('password'))
             user_obj.save()
-            client_obj = Client.objects.create(user_id=user_obj,**validated_data)
+            client_obj = Client.objects.create(user_id=user_obj,**client_data)
             
-            return Response({"Message":"Client created successfully"}
+            return Response({"Message":"Client Registered successfully"}
                             )
         return Response({"Message":client_serializer.errors})  
     
     def patch(self,request):
-        validated_data=request.data 
+        validated_data=request.data
         client_update = request.GET.get('client_update')
         client_obj = Client.objects.get(client_id=client_update)
-        client_serializer = ClientSerializer(client_obj,data=validated_data,partial=True)
+        client_data = {
+            'client_name': validated_data.get('client_name'),
+            'company_address': validated_data.get('company_address'),
+        }
+        user_data = validated_data.pop('user_id')
+        user_obj = client_obj.user_id
+        user_serializer = CoreUserSerializer(user_obj,data=user_data,partial=True)
+        if user_serializer.is_valid():
+            user_serializer.save() 
+        client_serializer = ClientSerializer(client_obj,data=client_data,partial=True)
         if client_serializer.is_valid():
             client_serializer.save()
             return Response({'Message':'Data updated successfully'}
                             )
         return Response(client_serializer.errors)  
+    
     def delete(self,request):
         delete_client = request.GET.get('delete_client')
         client_obj = Client.objects.get(client_id=delete_client)
+        user_obj = client_obj.user_id
+        user_obj.delete()
         client_obj.delete()
         return Response({'Message':"Client deleted successfully"})
     
@@ -86,11 +104,19 @@ class InvoiceAPI(APIView):
     def post(self,request):
         validated_data = request.data
         invoice_serializer = InvoiceSerializer(data=validated_data)
-
+        print('\n\n\n',validated_data,'\n\n\n')
         if invoice_serializer.is_valid():
-           invoice_serializer.save()
-           return Response({"message":"data posted successfully","data":invoice_serializer.data})
+            client_obj = Client.objects.get(client_id=validated_data['client_id'])
+            invoice_obj = Invoice.objects.create(
+            client_id=client_obj,
+            due_date=validated_data['due_date'] ,
+            total_amount=validated_data['total_amount'],
+            status=validated_data['status'] )
+        #    invoice_serializer.save()
+        #    print('\n\n\n',"successfully",'\n\n\n')
+            return Response({"message":"data posted successfully","data":invoice_serializer.data})
         else:
+            print(invoice_serializer._errors)
             return Response(invoice_serializer._errors)  
 
 
@@ -139,12 +165,6 @@ def invoicefilter(request):
         invoice_serializer = InvoiceSerializer(invoice_obj,many = True)
         return Response(invoice_serializer.data)
  
-
-
-
-
-
-
 
 
 
@@ -273,12 +293,6 @@ def projectFilter(request):
 
 
 
-
-
-
-
-
-
 class InvoiceitemAPI(APIView):
     def get(self,request):
         invoiceitem_obj = Invoice_item.objects.all()
@@ -318,17 +332,6 @@ class InvoiceitemAPI(APIView):
             invoiceitem_obj.delete()
             return Response({"message":"data deleted successfully "})  
         
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -383,3 +386,23 @@ class TeamListView(generics.ListAPIView):
     serializer_class = TeamSerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
     filterset_class = TeamFilter
+
+
+
+
+
+
+
+@api_view(['GET'])
+def invoice_chart(request):
+    if request.method == 'GET':
+        inv_obj = Invoice.objects.all()
+        inv_serializer = InvoiceSerializer(inv_obj,many=True).data
+        total_amount = []
+        due_data = []
+        for i in inv_serializer:
+            total_amount.append(i['total_amount'])
+            datee = datetime.datetime.strptime(i['due_date'], "%Y-%m-%d")
+            due_data.append(f'{calendar.month_abbr[datee.month]}-{datee.year}')
+        return Response({'total_amount':total_amount,'due_date':due_data})
+        

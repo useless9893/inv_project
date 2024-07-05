@@ -33,6 +33,22 @@ DEBUG = os.environ.get('DEBUG') == 'True'
 ALLOWED_HOSTS = ["*"]
 CORS_ALLOW_ALL_ORIGINS=True
 
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'ngrok-skip-browser-warning',
+]
+
+
+
 MEDIA_ROOT = os.path.join(BASE_DIR ,'media' ) 
 MEDIA_URL = '/media/'
 
@@ -266,6 +282,4 @@ JAZZMIN_SETTINGS = {
 
    # Whether to show the UI customizer on the sidebar
     "show_ui_builder": True,
-    
-
 }
