@@ -37,6 +37,8 @@ class CoreUser(AbstractBaseUser,PermissionsMixin):
         last_name = models.CharField(max_length=155)
         email = models.EmailField(null=True,unique=True)
         contact =PhoneNumberField(null=True,unique=True)
+        is_client=models.BooleanField(default=False,null=True)
+        is_employee=models.BooleanField(default=False,null=True)
         is_admin=models.BooleanField(default=False)
         is_staff=models.BooleanField(default=False)
 
