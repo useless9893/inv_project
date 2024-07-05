@@ -11,7 +11,9 @@ from rest_framework.filters import SearchFilter
 from .filters import *
 import datetime
 import calendar
-
+from rest_framework.permissions import IsAuthenticated
+from Auth_user.permissions import IsClientOwner
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
@@ -20,6 +22,8 @@ import calendar
 
 
 class ClientAPI(APIView):
+    authentication_classes=[JWTAuthentication]
+    permission_classes=[IsAuthenticated,IsClientOwner]
     def get(self,request):
         client_obj = Client.objects.all()
         client_serializer = ClientSerializer(client_obj,many=True)
