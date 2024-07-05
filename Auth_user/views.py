@@ -6,7 +6,16 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework import status ,viewsets
+from rest_framework import status
+from rest_framework import viewsets
+
+
+
+@api_view(['GET'])
+def get_coreuser(request):
+    obj = CoreUser.objects.all()
+    ser = CoreUserSerializer(obj,many=True)
+    return Response(ser.data)
 
 
 class LoginView(APIView):
@@ -19,6 +28,7 @@ class LoginView(APIView):
                 password = serializer.data['password']
                 print(f'Profile Name: {username}, Password: {password}')
                 user = authenticate(username=username,password=password)
+                print('\n\n\n')
                 print(f'Authenticated User: {user}')
                 if user is None:
                     return Response(serializer.errors,status=status.HTTP_404_NOT_FOUND)
