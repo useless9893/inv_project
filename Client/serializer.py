@@ -67,10 +67,13 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-
+    # tech_name = serializers.SerializerMethodField()
     class Meta:
         model = Project
         fields = '__all__'
+        
+    # def get_tech_name(self,obj):
+    #     print('\n\n\n',obj,'\n\n\n')    
 
 
 class InvoiceitemSerializer(serializers.ModelSerializer):
