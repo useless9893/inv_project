@@ -9,6 +9,8 @@ from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import *
+import datetime
+import calendar
 
 
 
@@ -166,12 +168,6 @@ def invoicefilter(request):
 
 
 
-
-
-
-
-
-
 class Technology_optionViewSet(viewsets.ModelViewSet):
     queryset = Technology_option.objects.all()
     serializer_class = Technology_optionSerializer
@@ -297,12 +293,6 @@ def projectFilter(request):
 
 
 
-
-
-
-
-
-
 class InvoiceitemAPI(APIView):
     def get(self,request):
         invoiceitem_obj = Invoice_item.objects.all()
@@ -342,17 +332,6 @@ class InvoiceitemAPI(APIView):
             invoiceitem_obj.delete()
             return Response({"message":"data deleted successfully "})  
         
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -412,11 +391,7 @@ class TeamListView(generics.ListAPIView):
 
 
 
-## Chart using plotly
-import plotly.express as px
-from plotly.offline import plot
-from plotly.graph_objs import Scatter
-import plotly.graph_objects as go
+
 
 @api_view(['GET'])
 def invoice_chart(request):
@@ -427,14 +402,7 @@ def invoice_chart(request):
         due_data = []
         for i in inv_serializer:
             total_amount.append(i['total_amount'])
-            due_data.append(i['due_date'])
-        #     print('\n\n\n',i['total_amount'],'\n\n\n')
-        #     print('\n\n\n',i['due_date'],'\n\n\n')
-        #     # fig = px.line(inv_serializer, x="year", y="lifeExp", title='Life expectancy in Canada')
-        # print(total_amount)
-        # print(due_data)
-        
-        plot_div = plot([Scatter(x=total_amount, y=due_data, mode='lines', name='test', opacity=0.8, marker_color='green')], output_type='div')
-        return Response(plot_div)
-        # return Response(inv_serializer)
+            datee = datetime.datetime.strptime(i['due_date'], "%Y-%m-%d")
+            due_data.append(f'{calendar.month_abbr[datee.month]}-{datee.year}')
+        return Response({'total_amount':total_amount,'due_date':due_data})
         
