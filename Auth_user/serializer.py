@@ -9,11 +9,12 @@ class LoginSerializer(serializers.Serializer):
    
     
 class CoreUserSerializer(serializers.ModelSerializer):
-    
+    password=serializers.CharField(write_only=True)
     class Meta:
         model = CoreUser  
         # fields = "__all__"
-        fields = ["user_id",'user_name','first_name','last_name','email','contact']
+        fields = ["user_id",'user_name','first_name','last_name','email','contact','password']
+         
         
         
 class CountrySerializer(serializers.ModelSerializer):
