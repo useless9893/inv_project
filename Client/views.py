@@ -11,9 +11,15 @@ from rest_framework.filters import SearchFilter
 from .filters import *
 import datetime
 import calendar
+from rest_framework.permissions import IsAuthenticated
+from Auth_user.permissions import IsClientOwner
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 
 class ClientAPI(APIView):
+    authentication_classes=[JWTAuthentication]
+    permission_classes=[IsAuthenticated,IsClientOwner]
     def get(self,request):
         try:
             client_obj = Client.objects.all()

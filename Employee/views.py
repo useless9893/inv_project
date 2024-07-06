@@ -6,13 +6,16 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework import status
-from rest_framework import generics
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
+from Auth_user.permissions import IsEmployeeOwner
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 
 
 
 class EmployeeAPI(APIView):
+    authentication_classes=[JWTAuthentication]
+    permission_classes=[IsAuthenticated,IsEmployeeOwner]
     def get(self,request):
         employee_obj = Employee.objects.all()
         employee_serializer = EmployeeSerializer(employee_obj,many=True)
@@ -65,7 +68,7 @@ class EmployeeAPI(APIView):
      
     def delete(self,request):
         delete_employee = request.GET.get('delete_employee')
-        employee_obj = CoreUser.objects.get(user_id=delete_employee)
+        employee_obj = Employee.objects.get(employee_id=delete_employee)
         employee_obj.delete()
         return Response({'Message':"Employee deleted successfully"})
 

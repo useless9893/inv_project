@@ -11,6 +11,7 @@ from rest_framework import viewsets
 
 
 
+
 @api_view(['GET','POST'])
 def get_coreuser(request):
     if request.method == "GET":
@@ -35,6 +36,7 @@ def get_coreuser(request):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+
 class LoginView(APIView):
     def post(self,request):
         try:
