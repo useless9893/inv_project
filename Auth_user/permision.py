@@ -1,37 +1,66 @@
 from .models import CoreUser
-from rest_framework.permissions import BasePermission
 from rest_framework import permissions
 
 
-
-
-
-class CoreUserPermision(permissions.BasePermission):
+class IsClientPermission(permissions.BasePermission):
 
     def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return False
+        if request.method not in ['GET','POST']:
+            return False
+        
+        if hasattr(request.user,'is_client'):
+            if not request.user:
+                return False
+        return True 
+
     
-    def has_object_permission(self, request, view, obj):
+
+class IsEmployeePermission(permissions.BasePermission):
+
+    def has_permission(self, request, view):
+        if request.method not in ['GET','POST']:
+            return False
+        
+        if hasattr(request.user,'is_employee'):
+            if not request.user:
+                return False
+        return True 
 
 
-        if request.user.is_client == True:
-            return True
-        # return obj.CoreUser == request.CoreUser
-        return False
+
+
+
+
+
+
+
+
+# class CoreUserPermision(permissions.BasePermission):
+
+#     def has_permission(self, request, view):
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
+#         return False
+    
+#     def has_object_permission(self, request, view, obj):
+
+
+#         if request.user.is_client == True:
+#             return True
+#         # return obj.CoreUser == request.CoreUser
+#         return False
          
 
-class Employeepermission(permissions.BasePermission):
+# class Employeepermission(permissions.BasePermission):
 
-    def has_permission(self, request, view):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return False
+#     def has_permission(self, request, view):
+#         if request.method in permissions.SAFE_METHODS:
+#             return True
+#         return False
     
-    def has_object_permission(self, request, view, obj):
-        if request.CoreUser.is_employee == True:
-            return True
+#     def has_object_permission(self, request, view, obj):
+#         if request.CoreUser.is_employee == True:
+#             return True
          
 
          

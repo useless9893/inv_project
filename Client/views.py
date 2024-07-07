@@ -12,7 +12,7 @@ from .filters import *
 import datetime
 import calendar
 from rest_framework.permissions import IsAuthenticated
-from Auth_user.permision import CoreUserPermision
+from Auth_user.permision import IsClientPermission
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
@@ -20,8 +20,10 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 class ClientAPI(APIView):
+    
     authentication_classes=[JWTAuthentication]
-    permission_classes=[IsAuthenticated,CoreUserPermision]
+    permission_classes=[IsAuthenticated,IsClientPermission]
+
     def get(self,request):
         client_obj = Client.objects.all()
         client_serializer = ClientSerializer(client_obj,many=True)

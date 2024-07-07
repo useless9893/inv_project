@@ -9,7 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.authentication import BaseAuthentication
-from .permision import CoreUserPermision
+
 
 
 
@@ -18,8 +18,6 @@ from .permision import CoreUserPermision
 def get_coreuser(request):
     obj = CoreUser.objects.all()
     ser = CoreUserSerializer(obj,many=True)
-    # authentication_class = [BaseAuthentication]
-    # permission_class = [CoreUserPermision]
     return Response(ser.data)
 
 

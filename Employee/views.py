@@ -9,10 +9,17 @@ from rest_framework import status
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+from rest_framework.permissions import IsAuthenticated
+from Auth_user.permision import IsEmployeePermission
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
 class EmployeeAPI(APIView):
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated,IsEmployeePermission]
+    
     def get(self,request):
         employee_obj = Employee.objects.all()
         employee_serializer = EmployeeSerializer(employee_obj,many=True)
