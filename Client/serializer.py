@@ -67,10 +67,12 @@ class TeamSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
-
+    tech_id = serializers.StringRelatedField(read_only=True,many=True)
     class Meta:
         model = Project
         fields = '__all__'
+        
+    
 
 
 class InvoiceitemSerializer(serializers.ModelSerializer):
