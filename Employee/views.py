@@ -12,6 +12,8 @@ from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
 from Auth_user.permision import IsEmployeePermission
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.conf import settings
+from django.core.mail import EmailMessage
 
 
 
@@ -49,6 +51,16 @@ class EmployeeAPI(APIView):
                                                    id_proof=validated_data['id_proof'],
                                                    salary=validated_data['salary'],
                                                    age=validated_data['age'])
+            
+
+            email = user_data['email']
+            message = EmailMessage(
+                'Test email subject',
+                'test email body,  client create successfully ',
+                settings.EMAIL_HOST_USER,
+                [email]
+            )
+            message.send(fail_silently=False)
             
             return Response({"Message":"Employee created successfully"})
         

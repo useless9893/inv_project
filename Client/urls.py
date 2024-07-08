@@ -16,7 +16,6 @@ urlpatterns = [
     path('client/',ClientAPI.as_view()),
     path('client_filter/', ClientListView.as_view()),
     path('invoice/',InvoiceAPI.as_view()),
-    # path('invoice_filter/<int:id>/',invoicefilter),
     path('invoice_filter/',invoicefilter),
     path('team/',TeamAPIView.as_view()),
     path('project/',ProjectAPIView.as_view()),
@@ -25,9 +24,8 @@ urlpatterns = [
     path('payment/',PaymentAPIView.as_view()),
     path('technology_filter/',TechnologyListView.as_view()),
     path('team_filter/',TeamListView.as_view()),
+    path('chart/',invoice_chart),   ##-chart url
     
-    ##-chart url
-    path('chart/',invoice_chart)
 ] 
 
 

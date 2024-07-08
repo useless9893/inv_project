@@ -171,7 +171,6 @@ EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
-
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -283,3 +282,11 @@ JAZZMIN_SETTINGS = {
    # Whether to show the UI customizer on the sidebar
     "show_ui_builder": True,
 }
+
+
+
+
+
+ 
+ 
+
