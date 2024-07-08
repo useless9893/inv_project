@@ -6,21 +6,31 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
 from rest_framework import status
+from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 from rest_framework.permissions import IsAuthenticated
-from Auth_user.permissions import IsEmployeeOwner
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import *
+from Auth_user.permissions import IsEmployeeOwner
+from django.conf import settings
+from django.core.mail import EmailMessage
+
+ 
+
 
 
 
 
 class EmployeeAPI(APIView):
+    
     authentication_classes=[JWTAuthentication]
     
     permission_classes=[IsAuthenticated,IsEmployeeOwner]
+
     def get(self,request):
         employee_obj = Employee.objects.all()
         employee_serializer = EmployeeSerializer(employee_obj,many=True)
@@ -50,6 +60,16 @@ class EmployeeAPI(APIView):
                                                    id_proof=validated_data['id_proof'],
                                                    salary=validated_data['salary'],
                                                    age=validated_data['age'])
+            
+
+            email = user_data['email']
+            message = EmailMessage(
+                'Test email subject',
+                'test email body,  client create successfully ',
+                settings.EMAIL_HOST_USER,
+                [email]
+            )
+            message.send(fail_silently=False)
             
             return Response({"Message":"Employee created successfully"})
         
