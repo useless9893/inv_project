@@ -8,10 +8,11 @@ class IsClientPermission(permissions.BasePermission):
         if request.method not in ['GET','POST']:
             return False
         
-        if hasattr(request.user,'is_client'):
+        if hasattr(request.user,'is_client'):       
             if not request.user:
                 return False
         return True 
+        
 
     
 
