@@ -19,6 +19,7 @@ from .filters import *
 
 class EmployeeAPI(APIView):
     authentication_classes=[JWTAuthentication]
+    
     permission_classes=[IsAuthenticated,IsEmployeeOwner]
     def get(self,request):
         employee_obj = Employee.objects.all()
