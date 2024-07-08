@@ -107,7 +107,7 @@ class ClientAPI(APIView):
         except Exception as e:
             return Response({"Message": f"Unexpected error: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-        
+
     def delete(self,request):
         try:
             delete_client = request.GET.get('delete_client')
@@ -210,20 +210,7 @@ class InvoiceAPI(APIView):
         except Exception as e:
             return Response({"Message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
         
-
-# class InvoiceListView(generics.ListAPIView):  # Apply Filtering in Invoice Model 
-#     queryset = Invoice.objects.all()
-#     serializer_class = InvoiceSerializer
-#     filter_backends = [SearchFilter , DjangoFilterBackend]
-#     fielterset_class = InvoiceFilter
-
-
-# @api_view(['GET'])                          # Apply Filtering in Invoice Model
-# def invoicefilter(request , id=None):
-#     if request.method=="GET":
-#         invoive_obj = Invoice.objects.filter(invoice_id=id)
-#         serializer_obj = InvoiceSerializer(invoive_obj, many=True)
-#         return Response(serializer_obj.data)
+ 
         
 
 @api_view(['GET'])                       # Apply Filtering in Invoice Model
