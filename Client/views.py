@@ -189,29 +189,11 @@ class InvoiceAPI(APIView):
             return Response({"Message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
         
 
-# class InvoiceListView(generics.ListAPIView):  # Apply Filtering in Invoice Model 
-#     queryset = Invoice.objects.all()
-#     serializer_class = InvoiceSerializer
-#     filter_backends = [SearchFilter , DjangoFilterBackend]
-#     fielterset_class = InvoiceFilter
-
-
-# @api_view(['GET'])                          # Apply Filtering in Invoice Model
-# def invoicefilter(request , id=None):
-#     if request.method=="GET":
-#         invoive_obj = Invoice.objects.filter(invoice_id=id)
-#         serializer_obj = InvoiceSerializer(invoive_obj, many=True)
-#         return Response(serializer_obj.data)
-        
-
-@api_view(['GET'])                       # Apply Filtering in Invoice Model
-def invoicefilter(request):
-    invoice = request.GET.get('invoice_id')
-    if invoice:
-        invoice_obj = Invoice.objects.filter(invoice_id = invoice)
-        invoice_serializer = InvoiceSerializer(invoice_obj,many = True)
-        return Response(invoice_serializer.data)
- 
+class InvoiceListView(generics.ListAPIView):  
+    queryset = Invoice.objects.all()
+    serializer_class = InvoiceSerializer
+    filter_backends = [SearchFilter,DjangoFilterBackend]
+    filterset_class = InvoiceFilter
 
 
 
@@ -363,24 +345,12 @@ class ProjectAPIView(APIView):
             return Response({"message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
-# class projectListView(generics.ListAPIView):  # Apply Filtering in Project Model 
-#     queryset = Project.objects.all()
-#     serializer_class = ProjectSerializer
-#     filter_backends = [SearchFilter , DjangoFilterBackend]
-#     filterset_class = ProjectFilter
+class ProjectListView(generics.ListAPIView):  # Apply Filtering in Project Model 
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    filter_backends = [SearchFilter,DjangoFilterBackend]
+    filterset_class = ProjectFilter
  
-
-
-@api_view(['GET'])                         # Apply Filtering in Project Model
-def projectFilter(request):
-
-    if request.method == 'GET':
-        project_name=request.GET.get("project_name" , None)
-        project_obj = Project.objects.filter(project_name=project_name)
-        serializer_obj = ProjectSerializer(project_obj,many=True)
-        return Response(serializer_obj.data)
-
-
 
 
 class InvoiceitemAPI(APIView):
