@@ -41,7 +41,14 @@ class EmployeeAPI(APIView):
         employee_serializer = EmployeeSerializer(data=validated_data)
         if employee_serializer.is_valid():
             user_data = validated_data.pop('user_id')
-            user_obj = CoreUser.objects.create(**user_data)
+            user_obj = CoreUser.objects.create(
+                                                user_name=user_data.get("user_name"),
+                                                first_name=user_data.get("first_name"),
+                                                last_name=user_data.get("last_name"),
+                                                email=user_data.get("email"),
+                                                contact=user_data.get("contact"),
+                                                is_employee=True
+                                                )
             user_obj.set_password(user_data['password'])
             user_obj.save()
             
