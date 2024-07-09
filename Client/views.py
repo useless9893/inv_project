@@ -10,16 +10,15 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import *
 import datetime
+from django.db.models import Count      
 import calendar
-from rest_framework.permissions import IsAuthenticated
-from Auth_user.permissions import IsClientOwner
+from rest_framework.permissions import IsAuthenticated,IsAdminUser
+from Auth_user.permissions import IsClientOwner,IsAdminOrReadOnly,CombinedPermissions
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
 
 
 class ClientAPI(APIView):
-    authentication_classes=[JWTAuthentication]
-    permission_classes=[IsAuthenticated,IsClientOwner]
     def get(self,request):
         try:
             client_obj = Client.objects.all()
@@ -187,63 +186,15 @@ class InvoiceAPI(APIView):
                 return Response({"Message": "No invoice ID provided"}, status=status.HTTP_400_BAD_REQUEST)  
         except Exception as e:
             return Response({"Message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)    
-        
-
-# class InvoiceListView(generics.ListAPIView):  # Apply Filtering in Invoice Model 
-#     queryset = Invoice.objects.all()
-#     serializer_class = InvoiceSerializer
-#     filter_backends = [SearchFilter , DjangoFilterBackend]
-#     fielterset_class = InvoiceFilter
-
-
-# @api_view(['GET'])                          # Apply Filtering in Invoice Model
-# def invoicefilter(request , id=None):
-#     if request.method=="GET":
-#         invoive_obj = Invoice.objects.filter(invoice_id=id)
-#         serializer_obj = InvoiceSerializer(invoive_obj, many=True)
-#         return Response(serializer_obj.data)
-        
-
-@api_view(['GET'])                       # Apply Filtering in Invoice Model
-def invoicefilter(request):
-    invoice = request.GET.get('invoice_id')
-    if invoice:
-        invoice_obj = Invoice.objects.filter(invoice_id = invoice)
-        invoice_serializer = InvoiceSerializer(invoice_obj,many = True)
-        return Response(invoice_serializer.data)
- 
-
-
-
-class Technology_optionViewSet(viewsets.ModelViewSet):
-    queryset = Technology_option.objects.all()
-    serializer_class = Technology_optionSerializer
     
-
-class TechnologyViewSet(viewsets.ModelViewSet):
-    queryset = Technology.objects.all()
-    serializer_class = TechnologySerializer
     
-
-class Payment_methodViewSet(viewsets.ModelViewSet):
-    queryset = Payment_method.objects.all()
-    serializer_class = Payment_methodSerializer
-
-
-
-class TaxViewSet(viewsets.ModelViewSet):
-    queryset = Tax.objects.all()
-    serializer_class = TaxSerializer
-
-
-
-
 
 class TeamAPIView(APIView):
+    serializer_class = TeamSerializer
     def get(self, request):
         try:
             team = Team.objects.all()
-            team_serializer = TeamSerializer(team, many=True)
+            team_serializer = self.serializer_class(team, many=True)
             return Response(team_serializer.data,status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"Message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -251,7 +202,7 @@ class TeamAPIView(APIView):
     def post(self, request):
         try:
             validated_data = request.data
-            serializer_obj = TeamSerializer(data=validated_data)
+            serializer_obj = self.serializer_class(data=validated_data)
 
             if serializer_obj.is_valid():
                 serializer_obj.save()
@@ -268,7 +219,7 @@ class TeamAPIView(APIView):
                 team = Team.objects.get(team_id=validated_data['team_id'])
             except Team.DoesNotExist:
                 return Response({"Message": "Team not found"}, status=status.HTTP_404_NOT_FOUND)
-            serializer_obj = TeamSerializer(team, data=request.data)
+            serializer_obj = self.serializer_class(team, data=request.data)
             if serializer_obj.is_valid():
                 serializer_obj.save()
                 return Response({"Message":"Team update Successfully"}, status=status.HTTP_200_OK)
@@ -362,27 +313,6 @@ class ProjectAPIView(APIView):
         except Exception as e:
             return Response({"message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
-# class projectListView(generics.ListAPIView):  # Apply Filtering in Project Model 
-#     queryset = Project.objects.all()
-#     serializer_class = ProjectSerializer
-#     filter_backends = [SearchFilter , DjangoFilterBackend]
-#     filterset_class = ProjectFilter
- 
-
-
-@api_view(['GET'])                         # Apply Filtering in Project Model
-def projectFilter(request):
-
-    if request.method == 'GET':
-        project_name=request.GET.get("project_name" , None)
-        project_obj = Project.objects.filter(project_name=project_name)
-        serializer_obj = ProjectSerializer(project_obj,many=True)
-        return Response(serializer_obj.data)
-
-
-
-
 class InvoiceitemAPI(APIView):
     def get(self,request):
         try:
@@ -438,8 +368,6 @@ class InvoiceitemAPI(APIView):
         except Exception as e:
             return Response({"message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)  
         
-
-
 
 class PaymentAPIView(APIView):
     def get(self, request):
@@ -497,13 +425,27 @@ class PaymentAPIView(APIView):
         except Exception as e:
             return Response({"message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
-class TechnologyListView(generics.ListAPIView):
+        
+class Technology_optionViewSet(viewsets.ModelViewSet):
+    queryset = Technology_option.objects.all()
+    serializer_class = Technology_optionSerializer
+    
+class TechnologyViewSet(viewsets.ModelViewSet):
     queryset = Technology.objects.all()
     serializer_class = TechnologySerializer
     filter_backends = [SearchFilter, DjangoFilterBackend]
     filterset_class = TechnologyFilter
+    
 
+class Payment_methodViewSet(viewsets.ModelViewSet):
+    queryset = Payment_method.objects.all()
+    serializer_class = Payment_methodSerializer
+
+class TaxViewSet(viewsets.ModelViewSet):
+    queryset = Tax.objects.all()
+    serializer_class = TaxSerializer  
+          
+    
 class TeamListView(generics.ListAPIView):
     queryset = Team.objects.all()
     serializer_class = TeamSerializer
@@ -511,21 +453,65 @@ class TeamListView(generics.ListAPIView):
     filterset_class = TeamFilter
 
 
-
-
-
-
-
+    
+            
+            
 @api_view(['GET'])
 def invoice_chart(request):
     if request.method == 'GET':
-        inv_obj = Invoice.objects.all()
-        inv_serializer = InvoiceSerializer(inv_obj,many=True).data
+        
+        now = datetime.datetime.now()
+        current_month = now.month
+        current_year = now.year
+
+        if current_month == 1:
+            previous_month = 12
+            previous_year = current_year - 1
+        else:
+            previous_month = current_month - 1
+            previous_year = current_year
+        current_month_invoices = Invoice.objects.filter(due_date__year=current_year, due_date__month=current_month)
+        previous_month_invoices = Invoice.objects.filter(due_date__year=previous_year, due_date__month=previous_month)
+        current_month_count = current_month_invoices.count()
+        previous_month_count = previous_month_invoices.count()
+
+        invoice_counts = Invoice.objects.values('due_date__year', 'due_date__month').annotate(count=Count('invoice_id')).order_by('due_date__year', 'due_date__month')
+        inv_count = []
+        for count_data in invoice_counts:
+            year = count_data['due_date__year']
+            month = count_data['due_date__month']
+            count = count_data['count']
+            month_name = calendar.month_abbr[month]
+            inv_count.append({'year': year, 'month': month_name, 'count': count})
+
+        if previous_month_count == 0:
+            percentage_change = 100.0 if current_month_count > 0 else 0.0
+        else:
+            percentage_change = ((current_month_count - previous_month_count) / previous_month_count) * 100
+
+        inv_serializer = InvoiceSerializer(current_month_invoices, many=True).data
+        inv_id = []
         total_amount = []
-        due_data = []
+        due_date = []
         for i in inv_serializer:
+            inv_id.append(i['invoice_id'])
             total_amount.append(i['total_amount'])
             datee = datetime.datetime.strptime(i['due_date'], "%Y-%m-%d")
-            due_data.append(f'{calendar.month_abbr[datee.month]}-{datee.year}')
-        return Response({'total_amount':total_amount,'due_date':due_data})
-        
+            due_date.append(f'{calendar.month_abbr[datee.month]}-{datee.year}')
+
+
+        tech_count = {}
+        technology_counts = Technology.objects.annotate(num_projects=Count('project')).values('name', 'num_projects')
+        for tech in technology_counts:
+            tech_count[tech['name']] = tech['num_projects']
+
+        return Response({
+            'inv_id': inv_id,
+            'total_amount': total_amount,
+            'due_date': due_date,
+            'current_month_count': current_month_count,
+            'previous_month_count': previous_month_count,
+            'percentage_change': percentage_change,
+            'inv_count': inv_count,
+            'technology_counts': tech_count
+        })            
