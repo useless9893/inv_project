@@ -334,7 +334,11 @@ class TeamAPIView(APIView):
         except Exception as e:
             return Response({"Message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+class TeamListView(generics.ListAPIView):
+    queryset = Team.objects.all()
+    serializer_class = TeamSerializer
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_class = TeamFilter
 
 
 
@@ -428,7 +432,11 @@ class ProjectAPIView(APIView):
         except Exception as e:
             return Response({"message":f"Unexpected error:{str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
+class ProjectListView(generics.ListAPIView):  
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+    filter_backends = [SearchFilter,DjangoFilterBackend]
+    filterset_class = ProjectFilter
  
 
 
@@ -586,19 +594,6 @@ class TaxViewSet(viewsets.ModelViewSet):
     queryset = Tax.objects.all()
     serializer_class = TaxSerializer  
               
-    
-class TeamListView(generics.ListAPIView):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
-    filter_backends = [SearchFilter, DjangoFilterBackend]
-    filterset_class = TeamFilter
-class ProjectListView(generics.ListAPIView):  
-    queryset = Project.objects.all()
-    serializer_class = ProjectSerializer
-    filter_backends = [SearchFilter,DjangoFilterBackend]
-    filterset_class = ProjectFilter
-
-
     
             
             
