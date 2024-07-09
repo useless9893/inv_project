@@ -47,7 +47,14 @@ class ClientAPI(APIView):
                 user_data = validated_data.pop('user_id',{})
 
                 try:
-                    user_obj = CoreUser.objects.create(**user_data)
+                    user_obj = CoreUser.objects.create(
+                                                        user_name=user_data.get("user_name"),
+                                                        first_name=user_data.get("first_name"),
+                                                        last_name=user_data.get("last_name"),
+                                                        email=user_data.get("email"),
+                                                        contact=user_data.get("contact"),
+                                                        is_client=True
+                                                        )
                     user_obj.set_password(user_data.get('password'))
                     user_obj.save()
 
@@ -369,7 +376,6 @@ class ProjectAPIView(APIView):
 
             except Team.DoesNotExist:
                 return Response({"message": "Team not found"}, status=status.HTTP_404_NOT_FOUND)
-            
 
             if serializer_obj.is_valid():
                 project_obj = Project.objects.create( 
