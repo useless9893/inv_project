@@ -87,6 +87,7 @@ class ClientAPI(APIView):
     def patch(self,request):
         try:
             validated_data=request.data
+            print('\n\n\n',validated_data,'\n\n\n')
             client_update = request.GET.get('client_update')
             client_obj = Client.objects.get(client_id=client_update)
             client_data = {
@@ -601,16 +602,17 @@ class TaxViewSet(viewsets.ModelViewSet):
     serializer_class = TaxSerializer  
               
     
-            
-            
+    
+
+        
 @api_view(['GET'])
 def invoice_chart(request):
     if request.method == 'GET':
-        
         now = datetime.datetime.now()
         current_month = now.month
+        print('\n\n\n',f'this is current month {current_month}')
         current_year = now.year
-
+        print('\n\n\n',f'this is current year {current_year}','\n\n\n')
         if current_month == 1:
             previous_month = 12
             previous_year = current_year - 1
@@ -618,13 +620,16 @@ def invoice_chart(request):
             previous_month = current_month - 1
             previous_year = current_year
         current_month_invoices = Invoice.objects.filter(due_date__year=current_year, due_date__month=current_month)
+        print('\n\n\n',f'this is current month invoice {current_month_invoices}','\n\n\n')
         previous_month_invoices = Invoice.objects.filter(due_date__year=previous_year, due_date__month=previous_month)
+        print('\n\n\n',f'this is previous month invoice {previous_month_invoices}','\n\n\n')
         current_month_count = current_month_invoices.count()
         previous_month_count = previous_month_invoices.count()
 
         invoice_counts = Invoice.objects.values('due_date__year', 'due_date__month').annotate(count=Count('invoice_id')).order_by('due_date__year', 'due_date__month')
         inv_count = []
         for count_data in invoice_counts:
+            print('\n\n\n'f'Count_data {count_data}')
             year = count_data['due_date__year']
             month = count_data['due_date__month']
             count = count_data['count']
@@ -636,29 +641,44 @@ def invoice_chart(request):
         else:
             percentage_change = ((current_month_count - previous_month_count) / previous_month_count) * 100
 
+
         inv_serializer = InvoiceSerializer(current_month_invoices, many=True).data
-        inv_id = []
+        inv_obj_model=Invoice.objects.all()
+        inv_serializer_1 = InvoiceSerializer(inv_obj_model, many=True).data
         total_amount = []
         due_date = []
-        for i in inv_serializer:
-            inv_id.append(i['invoice_id'])
+        for i in inv_serializer_1:
             total_amount.append(i['total_amount'])
             datee = datetime.datetime.strptime(i['due_date'], "%Y-%m-%d")
             due_date.append(f'{calendar.month_abbr[datee.month]}-{datee.year}')
 
 
+        tech_count_num=[]
+        tech_count_name=[]
         tech_count = {}
         technology_counts = Technology.objects.annotate(num_projects=Count('project')).values('name', 'num_projects')
         for tech in technology_counts:
+            tech_count_name.append(tech['name'])
+            tech_count_num.append(tech['num_projects'])
             tech_count[tech['name']] = tech['num_projects']
-
+            
+        tech_option_count_num=[]
+        tech_option_count_name=[]
+        tech_option_count = {}    
+        technology_option_counts = Technology_option.objects.annotate(num_projects=Count('project')).values('name', 'num_projects')
+        for tech in technology_counts:
+            tech_option_count_name.append(tech['name'])
+            tech_option_count_num.append(tech['num_projects'])
+            tech_option_count[tech['name']] = tech['num_projects']
         return Response({
-            'inv_id': inv_id,
+            # 'inv_id': inv_id,
             'total_amount': total_amount,
             'due_date': due_date,
             'current_month_count': current_month_count,
             'previous_month_count': previous_month_count,
             'percentage_change': percentage_change,
             'inv_count': inv_count,
-            'technology_counts': tech_count
+            'technology_counts': tech_count,
+            "tech_count_num":tech_count_num,
+            "tech_count_name":tech_count_name
         })            
