@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "elevate/wsgi.py"
+      "dest": "Core/wsgi.py"
     }
   ]
 }
