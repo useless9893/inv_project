@@ -30,7 +30,8 @@ DEBUG = os.environ.get('DEBUG') == 'True'
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["vercel.com"]
+
 CORS_ALLOW_ALL_ORIGINS=True
 
 CORS_ALLOW_METHODS = (
@@ -46,16 +47,14 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'ngrok-skip-browser-warning',
 ]
-CSRF_TRUSTED_ORIGINS = ['https://ei5osmw4z482.share.zrok.io']
+
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR ,'media' ) 
 MEDIA_URL = '/media/'
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
-
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 INSTALLED_APPS = [
     'jazzmin',
