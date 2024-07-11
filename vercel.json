@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "/static/$1"
+      "dest": "elevate/wsgi.py"
     }
   ],
   "buildCommand": "python manage.py collectstatic --noinput"
