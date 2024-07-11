@@ -201,6 +201,7 @@ class InvoiceAPI(APIView):
     def post(self,request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,'\n\n\n')
             invoice_serializer = InvoiceSerializer(data=validated_data)
 
             if invoice_serializer.is_valid():
@@ -364,6 +365,7 @@ class ProjectAPIView(APIView):
     def post(self, request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,  '\n\n\n')
             serializer_obj = ProjectSerializer(data=validated_data)
 
             try:
@@ -401,15 +403,13 @@ class ProjectAPIView(APIView):
     def put(self, request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,'\n\n\n')
             try:
                 project_obj = Project.objects.get(project_id=validated_data['project_id'])
 
             except Project.DoesNotExist:
                 return Response({"message": "Project not found"}, status=status.HTTP_404_NOT_FOUND) 
-            
             serializer_obj = ProjectSerializer(project_obj, data=validated_data,partial=True)
-
-
             if serializer_obj.is_valid():
                 serializer_obj.save()
                 return Response({"Message":"Project updated successfully"})
@@ -461,6 +461,7 @@ class InvoiceitemAPI(APIView):
     def post(self,request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,'\n\n\n')
             invoiceitem_serializer = InvoiceitemSerializer(data=validated_data)
 
             if invoiceitem_serializer.is_valid():
@@ -477,6 +478,7 @@ class InvoiceitemAPI(APIView):
     def put(self,request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,'\n\n\n')
             try:
                 invoiceitem_obj = Invoice_item.objects.get(invoice_item_id=validated_data['invoice_item_id'])
 
@@ -530,6 +532,7 @@ class PaymentAPIView(APIView):
     def post(self, request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,'\n\n\n')
             serializer_obj = PaymentSerializer(data=validated_data)
     
             if serializer_obj.is_valid():
@@ -546,8 +549,10 @@ class PaymentAPIView(APIView):
     def put(self, request):
         try:
             validated_data = request.data
+            print('\n\n\n',validated_data,'\n\n\n')
+            update_payment = request.GET.get('update_payment')
             try:
-                payment_obj = Payment.objects.get(payment_id=validated_data['payment_id'])
+                payment_obj = Payment.objects.get(payment_id=update_payment)
 
             except Payment.DoesNotExist:
                 return Response({"message": "Payment not found"}, status=status.HTTP_404_NOT_FOUND)
@@ -610,9 +615,7 @@ def invoice_chart(request):
     if request.method == 'GET':
         now = datetime.datetime.now()
         current_month = now.month
-        print('\n\n\n',f'this is current month {current_month}')
         current_year = now.year
-        print('\n\n\n',f'this is current year {current_year}','\n\n\n')
         if current_month == 1:
             previous_month = 12
             previous_year = current_year - 1
@@ -620,16 +623,13 @@ def invoice_chart(request):
             previous_month = current_month - 1
             previous_year = current_year
         current_month_invoices = Invoice.objects.filter(due_date__year=current_year, due_date__month=current_month)
-        print('\n\n\n',f'this is current month invoice {current_month_invoices}','\n\n\n')
         previous_month_invoices = Invoice.objects.filter(due_date__year=previous_year, due_date__month=previous_month)
-        print('\n\n\n',f'this is previous month invoice {previous_month_invoices}','\n\n\n')
         current_month_count = current_month_invoices.count()
         previous_month_count = previous_month_invoices.count()
 
         invoice_counts = Invoice.objects.values('due_date__year', 'due_date__month').annotate(count=Count('invoice_id')).order_by('due_date__year', 'due_date__month')
         inv_count = []
         for count_data in invoice_counts:
-            print('\n\n\n'f'Count_data {count_data}')
             year = count_data['due_date__year']
             month = count_data['due_date__month']
             count = count_data['count']
@@ -662,16 +662,7 @@ def invoice_chart(request):
             tech_count_num.append(tech['num_projects'])
             tech_count[tech['name']] = tech['num_projects']
             
-        tech_option_count_num=[]
-        tech_option_count_name=[]
-        tech_option_count = {}    
-        technology_option_counts = Technology_option.objects.annotate(num_projects=Count('project')).values('name', 'num_projects')
-        for tech in technology_counts:
-            tech_option_count_name.append(tech['name'])
-            tech_option_count_num.append(tech['num_projects'])
-            tech_option_count[tech['name']] = tech['num_projects']
         return Response({
-            # 'inv_id': inv_id,
             'total_amount': total_amount,
             'due_date': due_date,
             'current_month_count': current_month_count,
@@ -681,4 +672,5 @@ def invoice_chart(request):
             'technology_counts': tech_count,
             "tech_count_num":tech_count_num,
             "tech_count_name":tech_count_name
-        })            
+        })   
+        

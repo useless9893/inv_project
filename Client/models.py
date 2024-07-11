@@ -156,8 +156,8 @@ class Payment(models.Model):
 
     DisplayField = ['payment_id','invoice_id','method_id','amount','payment_date']
 
-    def __str__(self):
-        return self.payment_id
+    # def __str__(self):
+    #     return self.payment_id
     
     class Meta:
         db_table = 'payment'

@@ -46,7 +46,7 @@ from corsheaders.defaults import default_headers
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'ngrok-skip-browser-warning',
 ]
-
+CSRF_TRUSTED_ORIGINS = ['https://ei5osmw4z482.share.zrok.io']
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR ,'media' ) 
@@ -76,8 +76,8 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     "corsheaders.middleware.CorsMiddleware",
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
