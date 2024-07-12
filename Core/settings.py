@@ -149,16 +149,16 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.environ.get('Database_name'),
-#         'USER': os.environ.get('Database_username'),
-#         'PASSWORD': os.environ.get('Password'),
-#         'HOST': os.environ.get('Host_name'),  
-#         'PORT': '46683',      
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('Database_name'),
+        'USER': os.environ.get('Database_username'),
+        'PASSWORD': os.environ.get('Password'),
+        'HOST': os.environ.get('Host_name'),  
+        'PORT': '46683',      
+    }
+}
 
 DATABASES = {
     'default': {
