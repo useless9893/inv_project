@@ -160,12 +160,6 @@ DATABASES = {
     }
 }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'yourdatabasename.db'),
-    }
-}
 
 AUTH_USER_MODEL = 'Auth_user.CoreUser'
 
